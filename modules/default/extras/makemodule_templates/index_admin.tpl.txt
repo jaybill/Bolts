@@ -1,0 +1,6 @@
+{capture name=pagetitle}{t}MODULE_NAME_UC Admin Index Page{/t}{/capture}
+{include file="file:$admin_theme_global_path/_header.tpl" pagetitle=$smarty.capture.pagetitle}
+<div class="grid_16 alpha omega">
+	<h3 class="index">{$smarty.capture.pagetitle}</h3>
+</div>
+{include file="file:$admin_theme_global_path/_footer.tpl"}

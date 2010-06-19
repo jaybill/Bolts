@@ -1,0 +1,3 @@
+<li><a href="{url}/friends/index/requests{/url}" title="{t}Friend Requests{/t}">{t}Friend Requests{/t} ({friend_count type="requests" username=$loggedInUsername})</a></li>				
+<li><a href="{url}/friends/index/pending{/url}" title="{t}Pending Friend Requests{/t}">{t}Pending Friend Requests{/t} ({friend_count type="pending" username=$loggedInUsername})</a></li>
+<li><a href="{url}/friends{/url}" title="{t}My Friends{/t}">{t}My Friends{/t} ({friend_count username=$loggedInUsername})</a></li>
