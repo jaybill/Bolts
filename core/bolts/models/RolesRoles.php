@@ -7,12 +7,12 @@
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	About: See Also
-	 	<Cts_Db_Table_Abstract>
+	 	<Bolts_Db_Table_Abstract>
 */
-class RolesRoles extends Cts_Db_Table_Abstract {
+class RolesRoles extends Bolts_Db_Table_Abstract {
 
 	/* Group: Instance Variables */
 
@@ -20,7 +20,7 @@ class RolesRoles extends Cts_Db_Table_Abstract {
 		Variable: $_name
 			The name of the table or view to interact with in the data source.
 	*/
-	protected $_name = 'default_roles_roles';
+	protected $_name = 'bolts_roles_roles';
 
 	/*
 		Variable: $_primary

@@ -7,13 +7,13 @@
 		Rich Joslin
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	About: See Also
-		<Cts_Controller_Action_Abstract>
+		<Bolts_Controller_Action_Abstract>
 
 */
-class LocaleController extends Cts_Controller_Action_Abstract {
+class LocaleController extends Bolts_Controller_Action_Abstract {
 
 	/* Group: Actions */
 
@@ -22,8 +22,8 @@ class LocaleController extends Cts_Controller_Action_Abstract {
 	*/
 	function chooseAction() {
 		// TODO maybe? - prevent people from viewing this page if localization is not enabled
-		$default_locale = strtolower(Cts_Registry::get('default_locale', 'default'));
-		$request = new Cts_Request($this->getRequest());
+		$default_locale = strtolower(Bolts_Registry::get('default_locale', 'default'));
+		$request = new Bolts_Request($this->getRequest());
 
 		// TODO - get cookie value and validate it
 
@@ -89,21 +89,21 @@ class LocaleController extends Cts_Controller_Action_Abstract {
 	*/
 	function setcookieAction() {
 		// TODO maybe? - prevent people from viewing this page if localization is not enabled
-		$request = new Cts_Request($this->getRequest());
+		$request = new Bolts_Request($this->getRequest());
 		if ($request->has("code") && $request->code != "") {
 			$locale_code = $request->code;
-			$time = Cts_Registry::get('locale_cache_lifetime');
-			if (Cts_Translate::validateLocaleCode($locale_code)) {
+			$time = Bolts_Registry::get('locale_cache_lifetime');
+			if (Bolts_Translate::validateLocaleCode($locale_code)) {
 				setcookie("locale_code", $locale_code, time() + $time , "/");
 				if ($request->has("return_url")) {
-					$url_filter = new Cts_Url_Filter();
+					$url_filter = new Bolts_Url_Filter();
 					header("Location: ".$url_filter->filter($request->return_url, array('locale_code' => $locale_code)));
 				} else {
 					header("Location: /".$locale_code);
 				}
 			}
 		} else {
-			$this->_redirect("/default/locale/choose/");
+			$this->_redirect("/bolts/locale/choose/");
 		}
 	}
 

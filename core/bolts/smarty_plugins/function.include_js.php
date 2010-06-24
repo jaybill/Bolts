@@ -7,7 +7,7 @@
 		Rich Joslin
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	Function: smarty_function_include_js
 		Prints script tags based on a space-delimited list of URLs passed in.
@@ -45,7 +45,7 @@ function smarty_function_include_js($params, &$smarty) {
 	while (stripos($urls, "  ") !== false) {
 		$urls = str_replace("  ", " ", $urls);
 	}
-	$urls = split(" ", $urls);
+	$urls = explode(" ", $urls);
 	$output = "";
 	foreach ($urls as $url) {
 		if (trim($url) != "") {

@@ -1,19 +1,19 @@
 <?php
 /**
- * communit.as
+ * Bolts
  * @copyright (C)2008 Jaybill McCarthy, All Rights Reserved.
  * @category communitas
  * @package communitas
  * @author Jaybill McCarthy
- * @link http://communit.as communit.as
- * @license http://communit.as/docs/license License
+ * @link http://Bolts Bolts
+ * @license http://Bolts/docs/license License
  */
 
 /**
  *
  * @package communitas
  * @subpackage core_lib
- * @license http://communit.as/docs/license License 
+ * @license http://Bolts/docs/license License 
  */
  
 class Constants {

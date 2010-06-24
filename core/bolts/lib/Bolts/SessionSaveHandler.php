@@ -1,18 +1,18 @@
 <?php
 
 /*
-	Class: Cts_SessionSaveHandler
+	Class: Bolts_SessionSaveHandler
 
 	About: Author
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	About: See Also
 		Zend_Session_SaveHandler_Interface
 */
-class Cts_SessionSaveHandler implements Zend_Session_SaveHandler_Interface {
+class Bolts_SessionSaveHandler implements Zend_Session_SaveHandler_Interface {
 
 	/* Group: Instance Methods */
 
@@ -53,7 +53,7 @@ class Cts_SessionSaveHandler implements Zend_Session_SaveHandler_Interface {
 	*/
 	public function gc($lifetime) {
 		$sessions_table = new Sessions();
-		$where = "expiration < " . time() - (int)Cts_Registry::get('session_timeout');
+		$where = "expiration < " . time() - (int)Bolts_Registry::get('session_timeout');
 		
 		//$sessions_table->delete($where);
 	}
@@ -107,7 +107,7 @@ class Cts_SessionSaveHandler implements Zend_Session_SaveHandler_Interface {
 	*/
 	public function write($id, $value) {
 		$sessions_table = new Sessions();
-		$lifetime = (int)Cts_Registry::get('session_timeout');
+		$lifetime = (int)Bolts_Registry::get('session_timeout');
 		$expiration = time() + $lifetime;
 		
 		$data = array(

@@ -7,13 +7,13 @@
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	About: See Also
-		<Cts_Controller_Action_Abstract>
-		<Cts_Controller_Action_Admin>
+		<Bolts_Controller_Action_Abstract>
+		<Bolts_Controller_Action_Admin>
 */
-class ConfigController extends  Cts_Controller_Action_Admin {
+class ConfigController extends  Bolts_Controller_Action_Admin {
 
 	/* Group: Instance Methods */
 
@@ -50,7 +50,7 @@ class ConfigController extends  Cts_Controller_Action_Admin {
 	function indexAction() {
 		$config_table = new Config();
 		$modules_table = new Modules();
-		$request = new Cts_Request($this->getRequest());
+		$request = new Bolts_Request($this->getRequest());
 		if ($request->has('modid')) {
 			$modid = $request->modid;
 		} else {
@@ -66,7 +66,7 @@ class ConfigController extends  Cts_Controller_Action_Admin {
 			$this->view->success = $this->_T('Configuration Updated.');
 			$config_table->cache();
 			$params = array();
-			$this->_cts_plugin->doAction($this->_mca.'_post_save', $params); // ACTION HOOK
+			$this->_Bolts_plugin->doAction($this->_mca.'_post_save', $params); // ACTION HOOK
 		}
 		$config = $config_table->fetchAll($config_table->select()->where('module = ?', $modid));
 		if (count($config) > 0) {

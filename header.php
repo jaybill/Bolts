@@ -149,8 +149,8 @@ Zend_Registry::set('basepath', $basepath);
 
 $tmp_inculde_path = "";
 $smarty_plugins_dirs = null;
-$module_dir = $basepath."/modules";
-$default_dir = $module_dir. "/default";
+$module_dir = $basepath."/core";
+$default_dir = $module_dir. "/bolts";
 $subdirs = array("models", "plugins", "controllers", "lib");
 
 // set include paths for default module
@@ -183,10 +183,10 @@ if ($isInstalled) {
 	$writer = new Zend_Log_Writer_Stream($log_filename);
 	$filter = new Zend_Log_Filter_Priority($log_level);
 	$writer->addFilter($filter);		
-	Cts_Log::registerLogger('default', $writer, true);
-	Cts_Log::report("Log Started", null, Zend_Log::INFO);
+	Bolts_Log::registerLogger('default', $writer, true);
+	Bolts_Log::report("Log Started", null, Zend_Log::INFO);
 	// Create Plugin Manager
-	$cts_plugin = Cts_Plugin::getInstance();
+	$Bolts_plugin = Bolts_Plugin::getInstance();
 
 	// define constants
 	$constants = new Constants();
@@ -208,8 +208,8 @@ if ($isInstalled) {
 	// check for database changes
 	$modules_table = new Modules();
 
-	$modules_table->upgradeDatabase("default");
-	$modules_table->setDefaultConfig("default");
+	$modules_table->upgradeDatabase("bolts");
+	$modules_table->setDefaultConfig("bolts");
 
 	$config_table = new Config();
 	$config_array = $config_table->fetchall()->toArray();
@@ -219,7 +219,7 @@ if ($isInstalled) {
 	}
 
 	// Make session use the DB
-	Zend_Session::setSaveHandler(new Cts_SessionSaveHandler());	
+	Zend_Session::setSaveHandler(new Bolts_SessionSaveHandler());	
 	Zend_Session::start();	
 
 	// Get the list of modules from the db

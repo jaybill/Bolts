@@ -7,13 +7,13 @@
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	About: See Also
-		<Cts_Controller_Action_Abstract>
-		<Cts_Controller_Action_Admin>
+		<Bolts_Controller_Action_Abstract>
+		<Bolts_Controller_Action_Admin>
 */
-class ResourceController extends Cts_Controller_Action_Admin {
+class ResourceController extends Bolts_Controller_Action_Admin {
 
 	/* Group: Instance Methods */
 
@@ -47,7 +47,7 @@ class ResourceController extends Cts_Controller_Action_Admin {
 	*/
 	function editAction() {
 
-		$request = new Cts_Request($this->getRequest());
+		$request = new Bolts_Request($this->getRequest());
 
 		$modules_table = new Modules();
 		$roles_resources_table = new RolesResources();

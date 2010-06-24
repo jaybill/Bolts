@@ -1,15 +1,15 @@
 <?php
 
 /*
-	Class: Cts_System
+	Class: Bolts_System
 
 	About: Author
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 */
-class Cts_System {
+class Bolts_System {
 
 	/* Group: Variables */
 

@@ -1,15 +1,15 @@
 <?php
 
 /*
-	Class: Cts_Cache
+	Class: Bolts_Cache
 
 	About: Author
 		Rich Joslin
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 */
-class Cts_Cache {
+class Bolts_Cache {
 
 	/* Group: Constructors */
 

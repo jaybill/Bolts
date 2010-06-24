@@ -1,18 +1,18 @@
 <?php
 
 /*
-	Class: Cts_FilterTags
+	Class: Bolts_FilterTags
 
 	About: Author
 		Rich Joslin
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	About: See Also
 		Zend_Filter_Interface
 */
-class Cts_FilterFilename implements Zend_Filter_Interface {
+class Bolts_FilterFilename implements Zend_Filter_Interface {
 
 	/* Group: Instance Methods */
 

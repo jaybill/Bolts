@@ -7,12 +7,12 @@
 		Rich Joslin
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	About: See Also
-		<Cts_Db_Table_Abstract>
+		<Bolts_Db_Table_Abstract>
 */
-class Locales extends Cts_Db_Table_Abstract {
+class Locales extends Bolts_Db_Table_Abstract {
 
 	/* Group: Instance Variables */
 
@@ -20,7 +20,7 @@ class Locales extends Cts_Db_Table_Abstract {
 		Variable: $_name
 			The name of the table or view to interact with in the data source.
 	*/
-    protected $_name = 'default_locales';
+    protected $_name = 'bolts_locales';
 
 	/*
 		Variable: $_primary
@@ -33,7 +33,7 @@ class Locales extends Cts_Db_Table_Abstract {
 	function getDistinctRegions() {
 		return $this->fetchAllArray(
 			$this->select()
-			->from('default_locales', array('region_name'))
+			->from('bolts_locales', array('region_name'))
 			->distinct()
 		);
 	}
@@ -41,7 +41,7 @@ class Locales extends Cts_Db_Table_Abstract {
 	function getDistinctCountryCodes() {
 		return $this->fetchAllArray(
 			$this->select()
-			->from('default_locales', array('country_code', 'country_name'))
+			->from('bolts_locales', array('country_code', 'country_name'))
 			->distinct()
 		);
 	}
@@ -49,7 +49,7 @@ class Locales extends Cts_Db_Table_Abstract {
 	function getDistinctCountries($region_name) {
 		return $this->fetchAllArray(
 			$this->select()
-			->from('default_locales', array('country_code', 'country_name'))
+			->from('bolts_locales', array('country_code', 'country_name'))
 			->where("region_name = ?", $region_name)
 			->distinct()
 		);
@@ -59,7 +59,7 @@ class Locales extends Cts_Db_Table_Abstract {
 	function getDistinctPseudoCountryCodes($region_name) {
 		return $this->fetchAllArray(
 			$this->select()
-			->from('default_locales', array('pseudo_country_code'))
+			->from('bolts_locales', array('pseudo_country_code'))
 			->where("region_name = ?", $region_name)
 			->where("pseudo_country_code IS NOT NULL")
 			->distinct()
@@ -69,7 +69,7 @@ class Locales extends Cts_Db_Table_Abstract {
 	function getLanguages($region_name, $country_code) {
 		return $this->fetchAllArray(
 			$this->select()
-			->from('default_locales', array('language_code', 'language_name', 'pseudo_country_code', 'pseudo_language_code'))
+			->from('bolts_locales', array('language_code', 'language_name', 'pseudo_country_code', 'pseudo_language_code'))
 			->order('language_name asc')
 			->where("region_name = ?", $region_name)
 			->where("country_code = ?", $country_code)
@@ -79,7 +79,7 @@ class Locales extends Cts_Db_Table_Abstract {
 	function getLocaleCodes($lowercase = false) {
 		$tmp_locales = $this->fetchAllArray(
 			$this->select()
-			->from('default_locales', array('language_code', 'country_code'))
+			->from('bolts_locales', array('language_code', 'country_code'))
 			->distinct()
 		);
 		$locale_codes = array();
@@ -95,7 +95,7 @@ class Locales extends Cts_Db_Table_Abstract {
 	
 	function getLocaleCodesArray($lowercase, $exclude_pseudo=false){
 		$query = $this->select()
-			->from('default_locales', array('language_code', 'country_code','country_name','language_name'))
+			->from('bolts_locales', array('language_code', 'country_code','country_name','language_name'))
 			->distinct();
 			
 		if ($exclude_pseudo) {

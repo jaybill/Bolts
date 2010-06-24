@@ -1,18 +1,18 @@
 <?php
 
 /*
-	Class: Cts_Db_Table_Abstract
+	Class: Bolts_Db_Table_Abstract
 
 	About: Author
 		Jaybill McCarthy and Rich Joslin
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	About: See Also
 		- Zend_Db_Table
 */
-abstract class Cts_Db_Table_Abstract extends Zend_Db_Table {
+abstract class Bolts_Db_Table_Abstract extends Zend_Db_Table {
 
 	/* Group: Properties */
 
@@ -34,19 +34,19 @@ abstract class Cts_Db_Table_Abstract extends Zend_Db_Table {
 	/* Group: Constructors */
 
 	/*
-		Constructor: Cts_Db_Table_Abstract
-			Calls the parent's constructor and instantiates a logger. Also sets up a DB adapter and the _cts_plugin variable.
+		Constructor: Bolts_Db_Table_Abstract
+			Calls the parent's constructor and instantiates a logger. Also sets up a DB adapter and the _Bolts_plugin variable.
 
 		Arguments:
 			config (optional) - TBD
 	*/
-	function Cts_Db_Table_Abstract($config = null) {		
+	function Bolts_Db_Table_Abstract($config = null) {		
 		$this->_errors = array();
 		if (isset($this->_use_adapter)) {
 			$dbAdapters = Zend_Registry::get('dbAdapters');
 			$config = ($dbAdapters[$this->_use_adapter]);
 		}		
-		$this->_cts_plugin = Cts_Plugin::getInstance();
+		$this->_Bolts_plugin = Bolts_Plugin::getInstance();
 		return parent::__construct($config);
 	}
 
@@ -109,7 +109,7 @@ abstract class Cts_Db_Table_Abstract extends Zend_Db_Table {
 		}
 		// rethrowing exceptions here because of a weird php issue where the trace isn't getting passed
 		try {
-			$params = Cts_Plugin::getInstance()->doFilter('db_table_update', $params);		
+			$params = Bolts_Plugin::getInstance()->doFilter('db_table_update', $params);		
 		} catch (Exception $e) {
 			throw($e);	
 		}		
@@ -139,13 +139,13 @@ abstract class Cts_Db_Table_Abstract extends Zend_Db_Table {
 		}
 		// rethrowing exceptions here because of a weird php issue where the trace isn't getting passed
 		try {
-			$params = Cts_Plugin::getInstance()->doFilter('db_table_insert', $params);		
+			$params = Bolts_Plugin::getInstance()->doFilter('db_table_insert', $params);		
 		} catch (Exception $e) {
 			throw($e);	
 		}		
 		if (count($params['errors']) == 0) {
 			$params['insert_id'] = parent::insert($params['data']);
-			Cts_Plugin::getInstance()->doAction('db_table_post_insert', $params);
+			Bolts_Plugin::getInstance()->doAction('db_table_post_insert', $params);
 			return $params['insert_id'];
 		} else {
 			$this->_errors = $params['errors'];
@@ -159,7 +159,7 @@ abstract class Cts_Db_Table_Abstract extends Zend_Db_Table {
 	*/
 	public function dumpData() {
 		$data = $this->fetchAll();
-		$xml = Cts_Api::makeXml($data->toArray(), $this->_name);
+		$xml = Bolts_Api::makeXml($data->toArray(), $this->_name);
 		if (count($data) > 0) {
 			dd($data);			
 		}
@@ -290,7 +290,7 @@ abstract class Cts_Db_Table_Abstract extends Zend_Db_Table {
 			Translate a string using the module's language files.
 	*/
 	protected function _T($key, $replace = null) {
-		return Cts_Translate::translate($this->locale_code, 'default', $key, $replace);
+		return Bolts_Translate::translate($this->locale_code, 'default', $key, $replace);
 	}
 
 	/*

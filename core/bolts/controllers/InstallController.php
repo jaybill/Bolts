@@ -9,7 +9,7 @@
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 		
 	About: See Also
 		<InstallPlugin>	
@@ -34,7 +34,7 @@ class InstallController extends Zend_Controller_Action {
 			default_admin_theme_url - url to the base of the current admin theme
 			isAdminController - boolean set to true (so view uses correct theme)
 			current_path - filesystem path to the template directory for the current controller
-			site_name - set to "communit.as" for installer, used by default installer theme
+			site_name - set to "Bolts" for installer, used by default installer theme
 	*/
 	function init() {
 		parent::init();
@@ -46,7 +46,7 @@ class InstallController extends Zend_Controller_Action {
 		$this->view->default_admin_theme_url = $theme_locations['admin']['default_theme']['url'];		
 		$this->view->current_path = $template_path . "/" . $this->getRequest()->getControllerName();
         $this->view->isAdminController = true;
-		$this->view->site_name = "communit.as";
+		$this->view->site_name = "Bolts";
 	}
 
 	/* Group: Actions */
@@ -61,13 +61,13 @@ class InstallController extends Zend_Controller_Action {
 	*/
 	function secondstageAction() {
 		
-		$request = new Cts_Request($this->getRequest());
-		$appNamespace = new Zend_Session_Namespace('Cts_Temp');
+		$request = new Bolts_Request($this->getRequest());
+		$appNamespace = new Zend_Session_Namespace('Bolts_Temp');
 		$basepath = Zend_Registry::get('basepath');
 		$config_table = new Config();
 		$config_table->set('default', 'upload_path', $basepath."/uploads", true);
 		$config_table->set('default', 'theme', 'default', true);
-		$config_table->set('default', 'missing_image', $basepath."/themes/frontend/default/images/image-missing.png", true);
+		$config_table->set('default', 'missing_image', $basepath."/themes/frontend/bolts/images/image-missing.png", true);
 		$config_table->set('default', 'site_url', 'http://'.$_SERVER['SERVER_NAME']);
 		$config_table->set('default', 'salt', substr(md5(rand(1, 1000)), 0, 10));
 		$config_table->cache();
@@ -86,7 +86,7 @@ class InstallController extends Zend_Controller_Action {
 		} else {
 			die("Somehow the admin user didn't get created or didn't get sent with the request. This is bad. Really, really bad.");
 		}
-		$this->_redirect("/default/install/finished/username/".$username);
+		$this->_redirect("/bolts/install/finished/username/".$username);
 	}
 
 	/*
@@ -102,7 +102,7 @@ class InstallController extends Zend_Controller_Action {
 			
 	*/	
 	function finishedAction() {
-		$request = new Cts_Request($this->getRequest());
+		$request = new Bolts_Request($this->getRequest());
 		$username = $request->username;
 		$users_table = new Users();
 		$user = $users_table->fetchByUsername($username);
@@ -114,11 +114,11 @@ class InstallController extends Zend_Controller_Action {
 			$this->view->password = $password;
        		// we should never need this again, so we remove access to it.
        		$roles_resources_table = new RolesResources();
-       		$where  = $roles_resources_table->getAdapter()->quoteInto("module = ? ", "default");
+       		$where  = $roles_resources_table->getAdapter()->quoteInto("module = ? ", "bolts");
        		$where .= $roles_resources_table->getAdapter()->quoteInto(" and controller = ? ", "Install");
        		$roles_resources_table->delete($where);
 			$modules_table = new Modules();
-			$modules_table->upgradeDatabase("default");
+			$modules_table->upgradeDatabase("bolts");
 		} else {
 			die("Somehow the admin user didn't get created or didn't get sent with the request. This is bad. Really, really bad.");
 		}
@@ -133,10 +133,10 @@ class InstallController extends Zend_Controller_Action {
 		HTTP GET or POST Parameters:
 			admin_email - email address of the admin user (if chosen)
 			admin_username - username of the admin user (if chosen)
-			cts_asido_path - path to Asido image processing library
-			cts_smarty_path - path to Smarty template engine
-			cts_timezone - application default timezone
-			cts_zf_path - path to the Zend Framework
+			Bolts_asido_path - path to Asido image processing library
+			Bolts_smarty_path - path to Smarty template engine
+			Bolts_timezone - application default timezone
+			Bolts_zf_path - path to the Zend Framework
 			db_host - database hostname
 			db_name - database name
 			db_user - database username
@@ -150,10 +150,10 @@ class InstallController extends Zend_Controller_Action {
 		View Variables:
 			admin_email - email address of the admin user (if chosen)
 			admin_username - username of the admin user (if chosen)
-			cts_asido_path - path to Asido image processing library
-			cts_smarty_path - path to Smarty template engine
-			cts_timezone - application default timezone
-			cts_zf_path - path to the Zend Framework
+			Bolts_asido_path - path to Asido image processing library
+			Bolts_smarty_path - path to Smarty template engine
+			Bolts_timezone - application default timezone
+			Bolts_zf_path - path to the Zend Framework
 			db_host - database hostname
 			db_name - database name
 			db_user - database username
@@ -165,9 +165,9 @@ class InstallController extends Zend_Controller_Action {
 			smarty_compile_dir - the directory smarty will use for compiled templates
 	*/
 	function indexAction() {
-		$request = new Cts_Request($this->getRequest());
+		$request = new Bolts_Request($this->getRequest());
 		$basepath = Zend_Registry::get('basepath');
-		$this->view->timezones = Cts_Common::getTimeZonesArray();
+		$this->view->timezones = Bolts_Common::getTimeZonesArray();
 
 		if ($this->getRequest()->isPost()) {
 			$errors = array();
@@ -181,53 +181,16 @@ class InstallController extends Zend_Controller_Action {
 				$errors[] = $this->_T("Missing .htaccess file in %s. Maybe use %s/template.htaccess ?", array($basepath, $basepath));
 			}
 
-			$zf_version_class = $request->cts_zf_path."/Zend/Version.php";
-			$smarty_class_file = $request->cts_smarty_path . "/Smarty.class.php";
-			$asido_class_file = $request->cts_asido_path. "/class.asido.php";
 			$etc_dir = $basepath . "/etc";
 			$config_filename = $etc_dir . "/config.ini";
-			$tmp_path			= $request->tmp_path;
+			$tmp_path			= $basepath."/tmp";
 			$smarty_compile_dir = $tmp_path."/view_compiles";
 			$smarty_cache_dir 	= $tmp_path."/cache";
 			$image_cache_dir	= $tmp_path."/image_cache";
 			$upload_path		= $basepath."/uploads";
-			$log_path			= $request->log_path;
-			$module_cfg         = parse_ini_file($basepath."/modules/default/module.ini", true);
+			$log_path			= $basepath."/logs";
+			$module_cfg         = parse_ini_file($basepath."/modules/bolts/module.ini", true);
 
-			if (!file_exists($zf_version_class)) {
-				$errors[] = $this->_T("Can't find Zend Framework in %s", $request->cts_zf_path);
-			} else {
-				require_once($zf_version_class);
-				if (Zend_Version::compareVersion($module_cfg['lib_versions']['zf']) > 0) {
-					$errors[] = $this->_T("Communit.as requires Zend Framework %s or higher. The supplied version is %s.", array($module_cfg['lib_versions']['zf'], Zend_Version::VERSION));
-				}
-			}
-			
-			if (!file_exists($smarty_class_file)) {
-				$errors[] = $this->_T("Can't find Smarty in %s", $request->cts_smarty_path);
-			} else {				
-				
-				$smarty_class_lines = explode("\n",file_get_contents($smarty_class_file));
-				$strVersion = "* @version";
-				foreach ($smarty_class_lines as $line) {
-					if (strpos($line,$strVersion) !== false) {
-						$found_smarty_version = trim(substr($line,strpos($line,$strVersion) + strlen($strVersion)));
-						break;
-					}
-				}
-				if(version_compare($module_cfg['lib_versions']['smarty'],$found_smarty_version) > 0){
-					$errors[] = $this->_T("Communit.as requires Smarty Template Engine %s or higher. The supplied version is %s.", array($module_cfg['lib_versions']['smarty'], $found_smarty_version));
-				}
-			}
-			if (!file_exists($asido_class_file)) {
-				$errors[] = $this->_T("Can't find Asido in %s.", $request->cts_asido_path);
-			} else {
-				require_once($asido_class_file);
-				$asido = new Asido();
-				if (version_compare($module_cfg['lib_versions']['asido'],$asido->version()) > 0) {
-					$errors[] = $this->_T("Communit.as requires Asido %s or higher. The supplied version is %s.", array($module_cfg['lib_versions']['asido'], $asido->version()));
-				}
-			}
 			$dir_array = array($etc_dir,
 				$tmp_path,
 				$upload_path,
@@ -277,7 +240,7 @@ class InstallController extends Zend_Controller_Action {
 					}
 
 					// get the table creation script
-					$ddl_file = $basepath . "/modules/default/sql/" . $dbconfig->database->adapter . "/install.sql";
+					$ddl_file = $basepath . "/core/bolts/sql/" . $dbconfig->database->adapter . "/install.sql";
 					if(file_exists($ddl_file)){
 						$queries = explode(";",file_get_contents($ddl_file));
 						$db->beginTransaction();
@@ -321,23 +284,26 @@ class InstallController extends Zend_Controller_Action {
 				if(!is_null($request->db_sock)){
 					$config['db.communitas.config.unix_socket'] = $request->db_sock;
 				}
-				$config_file .= Cts_ConfigFile::makeSection("databases", "Database Settings", "This is the default database.", $config);
+				$config_file .= Bolts_ConfigFile::makeSection("databases", "Database Settings", "This is the default database.", $config);
+
+			
 				
-				$cts_config = array(
-					"timezone"			=> $request->cts_timezone,
+				
+				$Bolts_config = array(
+					"timezone"			=> $request->Bolts_timezone,
 					"launched" 			=> "1",
 					"prelaunch_url" 	=> "http://google.com",
 					"allowed_ips"		=> "127.0.0.1",					
-					"zf_path" 			=> $request->cts_zf_path,
-					"smarty_path" 		=> $request->cts_smarty_path,
-					"asido_path" 		=> $request->cts_asido_path,
+					"zf_path" 			=> $basepath."/lib/ZendFramework/library",
+					"smarty_path" 		=> $basepath."/lib/Smarty/libs",
+					"asido_path" 		=> $basepath."/lib/Asido",
 					"image_cache_dir"	=> $image_cache_dir,
-					"log_filename"		=> $log_path."/cts_log",
+					"log_filename"		=> $log_path."/bolts.log",
 					"log_level"			=> "6",
 					"addtl_includes"	=> "",
 				);
 
-				$config_file .= Cts_ConfigFile::makeSection("application", "Application Settings", "These are the application specific settings.", $cts_config);
+				$config_file .= Bolts_ConfigFile::makeSection("application", "Application Settings", "These are the application specific settings.", $Bolts_config);
 
 				// create directories if needed
 				if(!file_exists($smarty_compile_dir)){				
@@ -357,7 +323,7 @@ class InstallController extends Zend_Controller_Action {
 					"config.cache_dir" 		=> $smarty_cache_dir,
 				);
 
-				$config_file .= Cts_ConfigFile::makeSection("smarty", "Smarty Settings", "These are the settings for the Smarty template engine.", $smarty_config);
+				$config_file .= Bolts_ConfigFile::makeSection("smarty", "Smarty Settings", "These are the settings for the Smarty template engine.", $smarty_config);
 
 				
 				if(file_put_contents($config_filename,$config_file) === false){
@@ -365,7 +331,7 @@ class InstallController extends Zend_Controller_Action {
 					$this->view->config_filename = $config_filename;
 					$this->view->success = "Database installed, but could not write config file. Please create the file \"".$config_filename."\" and paste this following into it:";
 				} else {
-					$this->_redirect("/default/install/secondstage/username/".$request->admin_username);
+					$this->_redirect("/bolts/install/secondstage/username/".$request->admin_username);
 				}			
 
 			} else {
@@ -378,29 +344,21 @@ class InstallController extends Zend_Controller_Action {
 				$this->view->db_sock 	= $request->db_sock;
 				$this->view->admin_username		= $request->admin_username;				
 				$this->view->admin_email		= $request->admin_email;
-				$this->view->cts_timezone 		= $request->cts_timezone;
-				$this->view->cts_zf_path 		= $request->cts_zf_path;
-				$this->view->cts_smarty_path 	= $request->cts_smarty_path;
-				$this->view->cts_asido_path 	= $request->cts_asido_path;
-				$this->view->tmp_path			= $request->tmp_path;
-				$this->view->log_path			= $request->log_path;
+				$this->view->Bolts_timezone 	= $request->Bolts_timezone;
+
 				
 			}
 
 		} else {
 			$this->view->db_host = "localhost";
-			$this->view->db_name = "communitas";
+			$this->view->db_name = "bolts";
 			$this->view->db_user = "root";
 			$this->view->db_pass = "";
 			$this->view->db_port = "3306";
 			$this->view->db_sock = "";
-			$this->view->admin_username		= "admin";				
-			$this->view->cts_timezone 		= "America/Los_Angeles";
-			$this->view->cts_zf_path 		= $basepath."/lib/ZendFramework/library";
-			$this->view->cts_smarty_path 	= $basepath."/lib/Smarty/libs";
-			$this->view->cts_asido_path 	= $basepath."/lib/Asido";			
-			$this->view->tmp_path			= $basepath."/tmp";			
-			$this->view->log_path			= $basepath."/logs";
+			$this->view->admin_username		= "admin";
+			$this->view->Bolts_timezone 		= "America/Los_Angeles";				
+
 			 						
 		}			
 		
@@ -408,7 +366,7 @@ class InstallController extends Zend_Controller_Action {
 	
 	protected function _T($key, $replace = null) {
 		// we're not actually doing the translation in the installer. we may some day.		
-		return Cts_Translate::translate(null, "default", $key, $replace,false);
+		return Bolts_Translate::translate(null, "default", $key, $replace,false);
 	}
 
 }

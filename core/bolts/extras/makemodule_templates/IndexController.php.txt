@@ -7,12 +7,12 @@
 		Communitas Module Generator
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 	
 	About: See Also
-		<Cts_Controller_Action_Abstract>
+		<Bolts_Controller_Action_Abstract>
 */
-class MODULE_NAME_UC_IndexController extends Cts_Controller_Action_Abstract {
+class MODULE_NAME_UC_IndexController extends Bolts_Controller_Action_Abstract {
 
 	/* Group: Instance Methods */
 

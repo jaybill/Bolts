@@ -20,14 +20,14 @@
  * 
  */
 
-class Cts_Amazon_FPS_CBUIMultiUsePipeline extends Cts_Amazon_FPS_CBUIPipeline {
+class Bolts_Amazon_FPS_CBUIMultiUsePipeline extends Bolts_Amazon_FPS_CBUIPipeline {
 
     /**
      * @param string $accessKeyId    Amazon Web Services Access Key ID.
      * @param string $secretAccessKey   Amazon Web Services Secret Access Key.
      */
-    function Cts_Amazon_FPS_CBUIMultiUsePipeline($awsAccessKey, $awsSecretKey) {
-        parent::Cts_Amazon_FPS_CBUIPipeline("MultiUse", $awsAccessKey, $awsSecretKey);
+    function Bolts_Amazon_FPS_CBUIMultiUsePipeline($awsAccessKey, $awsSecretKey) {
+        parent::Bolts_Amazon_FPS_CBUIPipeline("MultiUse", $awsAccessKey, $awsSecretKey);
     }
 
     /**

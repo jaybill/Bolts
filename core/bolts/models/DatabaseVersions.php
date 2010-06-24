@@ -7,12 +7,12 @@
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	About: See Also
-	 	<Cts_Db_Table_Abstract>
+	 	<Bolts_Db_Table_Abstract>
 */
-class DatabaseVersions extends Cts_Db_Table_Abstract {
+class DatabaseVersions extends Bolts_Db_Table_Abstract {
 
 	/* Group: Instance Variables */
 
@@ -32,14 +32,14 @@ class DatabaseVersions extends Cts_Db_Table_Abstract {
 		Returns: void
 	*/
 	protected function _setupTableName() {
-		if (!in_array("default_database_versions", $this->getAdapter()->listTables())) {
+		if (!in_array("bolts_database_versions", $this->getAdapter()->listTables())) {
 			// table does not exist. we need to create it first.
-			$script = new Cts_Db_Script("default", "create_database_versions");
+			$script = new Bolts_Db_Script("default", "create_database_versions");
 			if (!$script) {
 				throw new Exception("CANT_UPGRADE - Cannot upgrade the database because versions table does not exist and couldn't be created.");
 			}
 		}
-		$this->_name = 'default_database_versions';
+		$this->_name = 'bolts_database_versions';
 		parent::_setupTableName();
 	}
 

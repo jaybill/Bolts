@@ -2,20 +2,20 @@
 
 /*
 	Class: Module
-		This is how communit.as modules are installed, enabled, disabled and removed.
+		This is how Bolts modules are installed, enabled, disabled and removed.
 		
 	About: Author
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	About: See Also
-		<Cts_Controller_Action_Abstract>
-		<Cts_Controller_Action_Admin>
+		<Bolts_Controller_Action_Abstract>
+		<Bolts_Controller_Action_Admin>
 		<Modules>
 */
-class ModuleController extends  Cts_Controller_Action_Admin {
+class ModuleController extends  Bolts_Controller_Action_Admin {
 
 	/* Group: Instance Methods */
 
@@ -51,7 +51,7 @@ class ModuleController extends  Cts_Controller_Action_Admin {
 	
     function indexAction(){
     	$modules_table = new Modules();
-    	$request = new Cts_Request($this->getRequest());
+    	$request = new Bolts_Request($this->getRequest());
 
     	if($request->has("id") and $request->has("perform")){
     			
@@ -164,7 +164,7 @@ class ModuleController extends  Cts_Controller_Action_Admin {
     				$module['available'] = false;
     				$tmp_modules[] = $module;
     			} catch (Exception $e){
-    				Cts_Log::report("Could not set up ".$module, $e, Zend_Log::ERR);
+    				Bolts_Log::report("Could not set up ".$module, $e, Zend_Log::ERR);
     			}
     		}			
     		
@@ -184,26 +184,26 @@ class ModuleController extends  Cts_Controller_Action_Admin {
 			
 	*/
 	function pluginAction(){
-		$hooks = $this->_cts_plugin->getHooksInUse();
+		$hooks = $this->_Bolts_plugin->getHooksInUse();
 		$this->view->hooks = $hooks;		
 	}
 	
 	function uninstallAction(){
-		$request = new Cts_Request($this->getRequest());
+		$request = new Bolts_Request($this->getRequest());
 		if($request->has('id')){
 			$this->view->id = $request->id;
 			$this->view->notice = $this->_T("You are about to uninstall a module. This cannot be undone.");
 		} else {
-			$this->_redirect('/default/module/index');
+			$this->_redirect('/bolts/module/index');
 		}
 		
 		if ($this->getRequest()->isPost()) {
 			$del = strtolower($request->delete);
 						
 			if($del == 'yes' && $request->has('id')){
-				$this->_redirect("/default/module/index/id/".$request->id."/perform/uninstall");
+				$this->_redirect("/bolts/module/index/id/".$request->id."/perform/uninstall");
 			} else {
-				$this->_redirect('/default/module/index');
+				$this->_redirect('/bolts/module/index');
 			}	
 		}
 				

@@ -1,18 +1,18 @@
 <?php
 
 /*
-	Class: Cts_Controller_Action_Admin
+	Class: Bolts_Controller_Action_Admin
 
 	About: Author
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	About: See Also
 		Zend_Controller_Action
 */
-abstract class Cts_Controller_Action_Admin extends Cts_Controller_Action_Abstract {
+abstract class Bolts_Controller_Action_Admin extends Bolts_Controller_Action_Abstract {
 
 	/*
 		Function: init
@@ -60,7 +60,7 @@ abstract class Cts_Controller_Action_Admin extends Cts_Controller_Action_Abstrac
 
 		if ($this->_identity->isAdmin) {
 			$bypass = array();
-			$globalRoles = explode(",", Cts_Registry::get('global_role_shortnames'));
+			$globalRoles = explode(",", Bolts_Registry::get('global_role_shortnames'));
 			$inherited_roles = array();
 			foreach ($this->my_roles as $role => $value) {
 				$ids = $roles_table->getAllAncestors($value['id']);
@@ -88,7 +88,7 @@ abstract class Cts_Controller_Action_Admin extends Cts_Controller_Action_Abstrac
 			$bypass = array_unique($bypass);
 			sort($bypass);
 			$this->view->bypass = $bypass;
-			if (@Cts_ResourceCheck::isAllowed("locale_specific_admin_role", "default", $this->_identity->username)) {
+			if (@Bolts_ResourceCheck::isAllowed("locale_specific_admin_role", "default", $this->_identity->username)) {
 				$this->_bumpRegionalAccess($bypass);
 			}
 
@@ -108,7 +108,7 @@ abstract class Cts_Controller_Action_Admin extends Cts_Controller_Action_Abstrac
 
 				$nav_table = new Navigation($unique_ids, $this->locale_code);
 				
-				$cache = new Cts_Cache();
+				$cache = new Bolts_Cache();
 				$cache_name = 'navigation_admin_'.$this->locale_code.'-'.md5(implode($unique_ids,"-"));	// MD5 The Unique IDs to shorten the cache name
 				$cache_tags = array('navigation', 'admin_navigation', $this->locale_code);
 
@@ -122,7 +122,7 @@ abstract class Cts_Controller_Action_Admin extends Cts_Controller_Action_Abstrac
 				}
 
 				$navparams = array('nav_items' => $nav_items_temp, 'request' => $this->_request, 'locale_code' => $this->locale_code);
-				$navparams = $this->_cts_plugin->doFilter('controller_nav', $navparams); // FILTER HOOK
+				$navparams = $this->_Bolts_plugin->doFilter('controller_nav', $navparams); // FILTER HOOK
 				$this->view->nav_items = $navparams['nav_items'];
 				$this->view->access = $this->restricted_role_id;
 			} else {
@@ -158,7 +158,7 @@ abstract class Cts_Controller_Action_Admin extends Cts_Controller_Action_Abstrac
 		}
 		$role_lock = array();
 		if ($this->_identity->isAdmin) {
-			$role_lock = @Cts_ResourceCheck::isAllowed("locale_specific_admin_role", "default", $this->_identity->username);
+			$role_lock = @Bolts_ResourceCheck::isAllowed("locale_specific_admin_role", "default", $this->_identity->username);
 		}
 		if(count($role_lock) > 0){ //user is under some type of locale restriction
 			$shortnames = array();
@@ -208,7 +208,7 @@ abstract class Cts_Controller_Action_Admin extends Cts_Controller_Action_Abstrac
 				if (!in_array($this->locale_code,$allowed) && count($allowed) > 0) {
 					$this->locale_code = $allowed[0];
 				}
-				$this->_redirect('/default/admin/index'); // bump to dashboard.
+				$this->_redirect('/bolts/admin/index'); // bump to dashboard.
 				
 			} else {
 				$this->restricted_role_id = $access;

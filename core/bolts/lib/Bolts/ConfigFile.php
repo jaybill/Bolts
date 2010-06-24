@@ -1,15 +1,15 @@
 <?php
 
 /*
-	Class: Cts_ConfigFile
+	Class: Bolts_ConfigFile
 
 	About: Author
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 */
-class Cts_ConfigFile {
+class Bolts_ConfigFile {
 
 	/* Group: Static Methods */
 

@@ -1,15 +1,15 @@
 <?php
 
 /*
-	Class: Cts_Url
+	Class: Bolts_Url
 
 	About: Author
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 */
-class Cts_Url {
+class Bolts_Url {
 
 	/* Group: Static Methods */
 

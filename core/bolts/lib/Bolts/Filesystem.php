@@ -1,15 +1,15 @@
 <?php
 
 /*
-	Class: Cts_Filesystem
+	Class: Bolts_Filesystem
 
 	About: Author
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 */
-class Cts_Filesystem {
+class Bolts_Filesystem {
 
 	/* Group: Static Methods */
 

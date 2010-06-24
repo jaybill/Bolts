@@ -7,13 +7,13 @@
 		Communitas Module Generator
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	About: See Also
-		- <Cts_Db_Table_Abstract>
+		- <Bolts_Db_Table_Abstract>
 		- Zend_Db_Table
 */
-abstract class MODULE_NAME_UC_Db_Table extends Cts_Db_Table_Abstract {
+abstract class MODULE_NAME_UC_Db_Table extends Bolts_Db_Table_Abstract {
 
 	public $_module_id = "MODULE_NAME_LOWER";
 

@@ -1,15 +1,15 @@
 <?php
 
 /*
-	Class: Cts_Encryption_TripleDES
+	Class: Bolts_Encryption_TripleDES
 
 	About: Author
 		Rich Joslin
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 */
-class Cts_Encryption_TripleDES {
+class Bolts_Encryption_TripleDES {
 
 	/*
 		Function: encryptForDotNet

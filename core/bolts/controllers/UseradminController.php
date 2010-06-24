@@ -7,13 +7,13 @@
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	About: See Also
-		<Cts_Controller_Action_Abstract>
-		<Cts_Controller_Action_Admin>
+		<Bolts_Controller_Action_Abstract>
+		<Bolts_Controller_Action_Admin>
 */
-class UseradminController extends  Cts_Controller_Action_Admin {
+class UseradminController extends  Bolts_Controller_Action_Admin {
 
 	/* Group: Instance Methods */
 
@@ -41,12 +41,12 @@ class UseradminController extends  Cts_Controller_Action_Admin {
 
 		Plugin Hooks:
 			- *useradmin_index_pre_select* (filter) - Allows you to affect query being submitted to return a list of users.
-				param request - Cts_Request object containing parsed request
+				param request - Bolts_Request object containing parsed request
 				param whereclause - the where clause that will be passed to the user select statement
 			
 			- *useradmin_index_post_select* (filter) - Allows you to affect the current array of users before displaying it on the page.
 				param users - The array of users to affect.
-				param request - Cts_Request object containing parsed request
+				param request - Bolts_Request object containing parsed request
 				
 				
 
@@ -55,7 +55,7 @@ class UseradminController extends  Cts_Controller_Action_Admin {
 			users - The array of users to display for the current page.
 	*/
 	function indexAction() {
-		$request = new Cts_Request($this->getRequest());
+		$request = new Bolts_Request($this->getRequest());
 		$users_table = new Users();
 
 		$searchterm = "";
@@ -63,7 +63,7 @@ class UseradminController extends  Cts_Controller_Action_Admin {
 		if ($request->has('searchterm') && trim($request->searchterm) != "") {
 			$searchterm = $request->searchterm;
 			if ($this->_request->isPost()) {
-				$this->_redirect("/default/useradmin/index/searchterm/".urlencode($searchterm)."/");
+				$this->_redirect("/bolts/useradmin/index/searchterm/".urlencode($searchterm)."/");
 			}
 			$whereclause = $users_table->getWhereClauseForKeywords($searchterm);
 		}
@@ -77,7 +77,7 @@ class UseradminController extends  Cts_Controller_Action_Admin {
         $this->view->roles = $roles->fetchAll()->toArray();
 
 		$params = array('request' => $request, 'whereclause' => $whereclause);
-		$params = $this->_cts_plugin->doFilter($this->_mca . "_pre_select", $params); // FILTER HOOK
+		$params = $this->_Bolts_plugin->doFilter($this->_mca . "_pre_select", $params); // FILTER HOOK
 		$whereclause = $params['whereclause'];
 		
 
@@ -92,16 +92,16 @@ class UseradminController extends  Cts_Controller_Action_Admin {
 			}
 		}
 
-		$per_page = Cts_Registry::get('useradmin_users_per_page');
+		$per_page = Bolts_Registry::get('useradmin_users_per_page');
 		$page = $this->_request->getParam('page', 0);
 		$total = $users_table->getCountByWhereClause($whereclause);
-		$url = "/default/useradmin/index";
+		$url = "/bolts/useradmin/index";
 
 		$this->makePager($page, $per_page, $total, $url, $params);
 		$users = $users_table->fetchAllArray($whereclause, 'username asc', $per_page, $per_page * $page);
 
 		$params = array('users' => $users, 'request' => $request, 'view_variables' => array());
-		$params = $this->_cts_plugin->doFilter($this->_mca . "_post_select", $params); // FILTER HOOK
+		$params = $this->_Bolts_plugin->doFilter($this->_mca . "_post_select", $params); // FILTER HOOK
 		$users = $params['users'];
 		foreach ($params['view_variables'] as $key => $value) {
 			$this->view->$key = $value;
@@ -154,7 +154,7 @@ class UseradminController extends  Cts_Controller_Action_Admin {
 		$errors = array();
 		$users_table = new Users();
 		$users_roles_table = new UsersRoles();
-		$request = new Cts_Request($this->getRequest());
+		$request = new Bolts_Request($this->getRequest());
 
 		$countries_table = new Countries();
 		$this->view->countries = $countries_table->getCountriesArray('Choose a country...');
@@ -195,7 +195,7 @@ class UseradminController extends  Cts_Controller_Action_Admin {
 			$user['aboutme'] = "";
 		}
 		
-		$pre_render = $this->_cts_plugin->doFilter($this->_mca."_pre_render", array('user' => $user, 'request' => $this->_request)); // FILTER HOOK
+		$pre_render = $this->_Bolts_plugin->doFilter($this->_mca."_pre_render", array('user' => $user, 'request' => $this->_request)); // FILTER HOOK
 		$user = $pre_render['user'];
 
 		foreach ($pre_render as $key => $value) {
@@ -223,14 +223,14 @@ class UseradminController extends  Cts_Controller_Action_Admin {
 
 			// validate username
 			$username_validator = new Zend_Validate();
-			$username_validator->addValidator(new Zend_Validate_StringLength(1, Cts_Registry::get('username_length')));
+			$username_validator->addValidator(new Zend_Validate_StringLength(1, Bolts_Registry::get('username_length')));
 			$username_validator->addValidator(new Zend_Validate_Alnum());
 			if (!$username_validator->isValid($user['username'])) {
 				$show_username = "'".$user['username']."'";
 				if (trim($user['username']) == "") {
 					$show_username = "[".$this->_T("empty")."]";
 				}
-				$errors[] = $this->_T("%s isn't a valid username. (Between %d and %d characters, only letters and numbers)", array($show_username, 1, Cts_Registry::get('username_length')));
+				$errors[] = $this->_T("%s isn't a valid username. (Between %d and %d characters, only letters and numbers)", array($show_username, 1, Bolts_Registry::get('username_length')));
 			}
 			if ($is_new) {
 				$user_where = $users_table->getAdapter()->quoteInto('username = ?', $user['username']);
@@ -240,7 +240,7 @@ class UseradminController extends  Cts_Controller_Action_Admin {
 			}
 
 			// validate email
-			if (!Cts_Validate::checkEmail($user['email'])) {
+			if (!Bolts_Validate::checkEmail($user['email'])) {
 				$errors[] = $this->_T("Email is not valid");
 		 	}
 
@@ -251,7 +251,7 @@ class UseradminController extends  Cts_Controller_Action_Admin {
 
 			// if password isn't blank, validate it
 			if ($user['password'] != "") {
-				if (!Cts_Validate::checkLength($user['password'], 6, Cts_Registry::get('password_length'))) {
+				if (!Bolts_Validate::checkLength($user['password'], 6, Bolts_Registry::get('password_length'))) {
 					$errors[] = $this->_T("Password must be between 6 and 32 characters");
 		 		}
 				// if password is set, make sure it matches confirm
@@ -272,27 +272,27 @@ class UseradminController extends  Cts_Controller_Action_Admin {
 			// upload new avatar image if present
 			if (array_key_exists('filedata', $_FILES)) {
 				if($_FILES['filedata']['tmp_name'] != ''){
-					$destination_path = Cts_Registry::get('upload_path') . "/" . $user['username'] . "/original";
+					$destination_path = Bolts_Registry::get('upload_path') . "/" . $user['username'] . "/original";
 					if(!is_dir($destination_path)){
 					  	mkdir($destination_path, 0777, true);
-						Cts_Log::report("Creating user folder at " . $destination_path, null, Zend_Log::DEBUG);
+						Bolts_Log::report("Creating user folder at " . $destination_path, null, Zend_Log::DEBUG);
 					}
 					if(file_exists($destination_path . "/avatar")){
 						unlink($destination_path . "/avatar");
-						Cts_Log::report("Deleted existing user avatar from " . $destination_path, null, Zend_Log::DEBUG);
+						Bolts_Log::report("Deleted existing user avatar from " . $destination_path, null, Zend_Log::DEBUG);
 					}else{
-						Cts_Log::report("User avatar did not exist in " . $destination_path, null, Zend_Log::DEBUG);
+						Bolts_Log::report("User avatar did not exist in " . $destination_path, null, Zend_Log::DEBUG);
 					}
 					move_uploaded_file($_FILES['filedata']['tmp_name'], $destination_path . "/avatar");
 					Users::clearUserCache($user['username']);
-					Cts_Log::report("User avatar uploaded to " . $destination_path, null, Zend_Log::DEBUG);
+					Bolts_Log::report("User avatar uploaded to " . $destination_path, null, Zend_Log::DEBUG);
 					$params['user']['hasnewfile'] = true;
 				}else{
 					$params['user']['hasnewfile'] = false;
 				}
 			}
 
-			$additional = $this->_cts_plugin->doFilter($this->_mca . "_pre_save", $params); // FILTER HOOK
+			$additional = $this->_Bolts_plugin->doFilter($this->_mca . "_pre_save", $params); // FILTER HOOK
 			$errors = $additional['errors'];
 			$user = $additional['user'];
 
@@ -335,7 +335,7 @@ class UseradminController extends  Cts_Controller_Action_Admin {
 						'user' => $user,
 						'errors' => $errors
 						);
-					$additional1 = $this->_cts_plugin->doFilter($this->_mca, $stuff); // FILTER HOOK
+					$additional1 = $this->_Bolts_plugin->doFilter($this->_mca, $stuff); // FILTER HOOK
 					$errors = $additional1['errors'];
 					$user = $additional1['user'];
 					$data['username'] = $user['username'];
@@ -356,9 +356,9 @@ class UseradminController extends  Cts_Controller_Action_Admin {
 				$this->view->errors = $errors;
 			}
 		}
-		$this->view->end_year = -(Cts_Registry::get('minimum_registration_age'));
-		$this->view->genders = Cts_Common::getGenderArray();
-		$user['aboutme'] = Cts_Common::br2nl($user['aboutme']);
+		$this->view->end_year = -(Bolts_Registry::get('minimum_registration_age'));
+		$this->view->genders = Bolts_Common::getGenderArray();
+		$user['aboutme'] = Bolts_Common::br2nl($user['aboutme']);
 		$this->view->user = $user;
 	}
 
@@ -381,23 +381,23 @@ class UseradminController extends  Cts_Controller_Action_Admin {
 			user - The user to delete.
 	*/
 	function deleteAction() {
-		$request = new Cts_Request($this->getRequest());
+		$request = new Bolts_Request($this->getRequest());
 		$users_table = new Users();
 		$username = $request->username;
 		if ($this->getRequest()->isPost()) {
 			$del = strtolower($request->delete);			
 			if ($del == 'yes' && !is_null($username)) {
 				$params = array('username' => $username, 'delete_row' => true);
-				$params = $this->_cts_plugin->doFilter($this->_mca . "_pre_delete", $params); // FILTER HOOK
+				$params = $this->_Bolts_plugin->doFilter($this->_mca . "_pre_delete", $params); // FILTER HOOK
 				if ($params['delete_row']) {
 					$where = $users_table->getAdapter()->quoteInto('username = ?', $username);
 					$users_table->delete($where);
 				}
-				$this->_cts_plugin->doAction($this->_mca . "_post_delete", $params); // ACTION HOOK
+				$this->_Bolts_plugin->doAction($this->_mca . "_post_delete", $params); // ACTION HOOK
 				$this->view->success = "User '".$username."' has been deleted.";
 				$this->view->username = $username;
 			} else {
-				$this->_redirect('/default/useradmin/index');
+				$this->_redirect('/bolts/useradmin/index');
 			}
 		} else {
 			$this->view->notice = "Warning: You are about to delete user '".$username."'. This cannot be undone.";
@@ -407,7 +407,7 @@ class UseradminController extends  Cts_Controller_Action_Admin {
 					$this->view->user = $user->toArray();
 					$this->view->username = $user->username;
 				} else {
-					$this->_redirect('/default/useradmin/index');
+					$this->_redirect('/bolts/useradmin/index');
 				}
 			}
 		}
@@ -428,7 +428,7 @@ class UseradminController extends  Cts_Controller_Action_Admin {
 				param user - the array containing the user data.
 	*/
 	function testdataAction() {
-		$request = new Cts_Request($this->getRequest());
+		$request = new Bolts_Request($this->getRequest());
 
 		if ($this->getRequest()->isPost()) {
 			$errors = array();
@@ -498,8 +498,8 @@ class UseradminController extends  Cts_Controller_Action_Admin {
 					$count++;
 				}
 				$this->view->success = "User data loaded. Created ".$count." users.";
-				Cts_Registry::set('test_data_path', $request->data_path);
-				$this->view->data_path = Cts_Registry::get('test_data_path');				
+				Bolts_Registry::set('test_data_path', $request->data_path);
+				$this->view->data_path = Bolts_Registry::get('test_data_path');				
 				$this->view->email_domain = $email_domain;
 			} else {
 				$this->view->errors = $errors;

@@ -11,7 +11,7 @@
  * @version $Id:$
  * 
  */
-class Cts_Log {
+class Bolts_Log {
 	/**
 	 * Array of Zend Log instances
 	 * @var array

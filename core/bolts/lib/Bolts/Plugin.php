@@ -1,15 +1,15 @@
 <?php
 /*
-	Class: Cts_Plugin
+	Class: Bolts_Plugin
 
 	About: Author
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 */
 
-class Cts_Plugin {
+class Bolts_Plugin {
  
   // object instance
   private static $instance;
@@ -43,7 +43,7 @@ class Cts_Plugin {
   //does not already exist.
   public static function getInstance() {
     if (!self::$instance instanceof self) {
-      Cts_Log::info("Creating plugin manager"); 
+      Bolts_Log::info("Creating plugin manager"); 
       self::$instance = new self;
     }
     return self::$instance;
@@ -60,7 +60,7 @@ class Cts_Plugin {
 			void
 	*/
 	function addActionHook($hook) {
-		Cts_Log::report("Cts_Plugin", "Adding action hook: '" . $hook . "'");
+		Bolts_Log::report("Bolts_Plugin", "Adding action hook: '" . $hook . "'");
 		$plugins = Zend_Registry::get('plugin_actions');
 		$plugins[$hook] = array();
 		Zend_Registry::set('plugin_actions', $plugins);
@@ -82,7 +82,7 @@ class Cts_Plugin {
 			void
 	*/
 	function addFilterHook($hook) {
-		Cts_Log::report("Cts_Plugin", "Adding filter hook: '" . $hook . "'");
+		Bolts_Log::report("Bolts_Plugin", "Adding filter hook: '" . $hook . "'");
 		$filters = Zend_Registry::get('plugin_filters');
 		$filters[$hook] = array();		
 		Zend_Registry::set('plugin_filters', $filters);
@@ -102,7 +102,7 @@ class Cts_Plugin {
 			void
 	*/
 	function addFilter($hook, $class_name, $function_name, $priority = 10) {
-		Cts_Log::report("Cts_Plugin", "Adding filter: '" . $hook . "'");
+		Bolts_Log::report("Bolts_Plugin", "Adding filter: '" . $hook . "'");
 		$filters = Zend_Registry::get('plugin_filters');
 		$filters[$hook][] = array(
 			'class_name' => $class_name,
@@ -126,7 +126,7 @@ class Cts_Plugin {
 			void
 	*/
 	function addAction($hook, $class_name, $function_name, $priority = 10) {
-		Cts_Log::report("Cts_Plugin", "Adding action: '" . $hook . "'");
+		Bolts_Log::report("Bolts_Plugin", "Adding action: '" . $hook . "'");
 		$plugins = Zend_Registry::get('plugin_actions');
 		$plugins[$hook][] = array(
 			'class_name' => $class_name,
@@ -148,9 +148,9 @@ class Cts_Plugin {
 			The parameter array that was passed in. with any changes made durung plugin processing.
 	*/
 	static function doFilter($hook, $params) {
-		$message = "Cts_Plugin: Filter hook fired - " . $hook;
-		Cts_Log::report($message,null,Zend_Log::INFO);
-		//Cts_Log::report("Cts_Plugin: Filter hook fired - " . $hook, $params,Zend_Log::DEBUG);	
+		$message = "Bolts_Plugin: Filter hook fired - " . $hook;
+		Bolts_Log::report($message,null,Zend_Log::INFO);
+		//Bolts_Log::report("Bolts_Plugin: Filter hook fired - " . $hook, $params,Zend_Log::DEBUG);	
 		$filters = Zend_Registry::get('plugin_filters');
 		if (array_key_exists($hook, $filters)) {
 			$priority = array();
@@ -161,14 +161,14 @@ class Cts_Plugin {
 			}
 
 			array_multisort($priority, SORT_ASC, $functions, SORT_ASC, $filters[$hook]);
-			//Cts_Log::report("Cts_Plugin: Filter priority arrays for ",array('priority' => $priority, 'functions' => $functions, 'plugins-' . $hook => $filters[$hook]), Zend_Log::DEBUG);
+			//Bolts_Log::report("Bolts_Plugin: Filter priority arrays for ",array('priority' => $priority, 'functions' => $functions, 'plugins-' . $hook => $filters[$hook]), Zend_Log::DEBUG);
 			foreach ($filters[$hook] as $action) {
 				$class_name = $action['class_name'];
 				$function_name = $action['function_name'];				
 				$class = new $class_name;
-				//Cts_Log::report("Cts_Plugin: Filter " . $hook . " is calling " . $class_name . "::" . $function_name, null, Zend_Log::INFO);
+				//Bolts_Log::report("Bolts_Plugin: Filter " . $hook . " is calling " . $class_name . "::" . $function_name, null, Zend_Log::INFO);
 				$params = $class->$function_name($params);
-				//Cts_Log::report("Cts_Plugin: " . $class_name . "::" . $function_name . " returned params to " . $hook, $params);
+				//Bolts_Log::report("Bolts_Plugin: " . $class_name . "::" . $function_name . " returned params to " . $hook, $params);
 			}
 		}
 		return $params;
@@ -186,8 +186,8 @@ class Cts_Plugin {
 			void
 	*/
 	static function doAction($hook, $params) {
-		Cts_Log::report("Cts_Plugin: Action hook fired - " . $hook, null, Zend_Log::INFO);
-		Cts_Log::report("Cts_Plugin: Action hook fired - " . $hook . " - params: ", $params);	
+		Bolts_Log::report("Bolts_Plugin: Action hook fired - " . $hook, null, Zend_Log::INFO);
+		Bolts_Log::report("Bolts_Plugin: Action hook fired - " . $hook . " - params: ", $params);	
 		$plugins = Zend_Registry::get('plugin_actions');
 		if (array_key_exists($hook, $plugins)) {
 			$priority = array();
@@ -198,12 +198,12 @@ class Cts_Plugin {
 			}
 			
 			array_multisort($priority, SORT_ASC, $functions, SORT_ASC, $plugins[$hook]);
-			Cts_Log::report("Cts_Plugin: Action priority arrays for " . $hook, array('priority' => $priority, 'functions' => $functions, 'plugins-' . $hook => $plugins[$hook]), Zend_Log::DEBUG);
+			Bolts_Log::report("Bolts_Plugin: Action priority arrays for " . $hook, array('priority' => $priority, 'functions' => $functions, 'plugins-' . $hook => $plugins[$hook]), Zend_Log::DEBUG);
 			foreach ($plugins[$hook] as $action) {
 				$class_name = $action['class_name'];
 				$function_name = $action['function_name'];
 				$class = new $class_name;
-				Cts_Log::report("Cts_Plugin: Action " . $hook . " is calling " . $class_name . "::" . $function_name, null, Zend_Log::INFO);
+				Bolts_Log::report("Bolts_Plugin: Action " . $hook . " is calling " . $class_name . "::" . $function_name, null, Zend_Log::INFO);
 				$class->$function_name($params);
 			}
 		}

@@ -7,12 +7,12 @@
 		Rich Joslin
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	About: See Also
-	 	- <Cts_Db_Table_Abstract>
+	 	- <Bolts_Db_Table_Abstract>
 */
-class Navigation extends Cts_Db_Table_Abstract {
+class Navigation extends Bolts_Db_Table_Abstract {
 
 	/* Group: Instance Variables */
 
@@ -20,7 +20,7 @@ class Navigation extends Cts_Db_Table_Abstract {
 		Variable: $_name
 			The name of the table or view to interact with in the data source.
 	*/
-    protected $_name = 'default_navigation';
+    protected $_name = 'bolts_navigation';
 
 	/*
 		Variable: $_primary
@@ -108,7 +108,7 @@ class Navigation extends Cts_Db_Table_Abstract {
 		Arguments:
 			parent_id - The ID of the nav item for which to get children.
 
-		Returns: array of nav items (as pulled from default_navigation table)
+		Returns: array of nav items (as pulled from bolts_navigation table)
 	*/
 	function getNavArrayByParentId($parent_id) {
 		$select = $this->select();
@@ -118,7 +118,7 @@ class Navigation extends Cts_Db_Table_Abstract {
 		$nav_items = $this->fetchAllArray($select);
 		if (!is_null($nav_items)) {
 			$params = array('nav_items' => $nav_items, 'locale_code' => $this->locale_code);
-			$params = Cts_Plugin::getInstance()->doFilter('default_nav_filter', $params); // FILTER HOOK
+			$params = Bolts_Plugin::getInstance()->doFilter('bolts_nav_filter', $params); // FILTER HOOK
 			return $params['nav_items'];
 		} else {
 			// return an empty array instead of null so a foreach on the result doesn't throw a warning

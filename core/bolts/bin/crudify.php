@@ -96,9 +96,9 @@ $model_file->setClass($model_class);
 // create new controller class
 $controller_class = new Zend_CodeGenerator_Php_Class();
 if ($is_admin) {
-	$controller_class->setName($controller_name)->setExtendedClass("Cts_Controller_Action_Admin");
+	$controller_class->setName($controller_name)->setExtendedClass("Bolts_Controller_Action_Admin");
 } else {
-	$controller_class->setName($controller_name)->setExtendedClass("Cts_Controller_Action_Abstract");
+	$controller_class->setName($controller_name)->setExtendedClass("Bolts_Controller_Action_Abstract");
 }
 
 if (!is_array($pk)) {
@@ -111,7 +111,7 @@ if (!is_array($pk)) {
 
 	// edit action
 	$edit_method = new Zend_CodeGenerator_Php_Method();
-	$edit_method_body = file_get_contents($basepath."/modules/default/extras/crudify_templates/editAction.txt");
+	$edit_method_body = file_get_contents($basepath."/modules/bolts/extras/crudify_templates/editAction.txt");
 	$data_array_string = "";
 	$data_validation_string = "";
 	$error_view_variables ="";
@@ -137,14 +137,14 @@ if (!is_array($pk)) {
 		"VIEW_VARIABLES"       => $view_variables,
 		"OBJECT_NICENAME"      => $name,
 	);
-	$edit_method_body = Cts_Common::replaceWithArray($edit_method_body, $edit_action_replacements);
+	$edit_method_body = Bolts_Common::replaceWithArray($edit_method_body, $edit_action_replacements);
 	$edit_method->setName('editAction')->setBody($edit_method_body);
 	$controller_class->setMethod($edit_method);
 
 	// load edit template
-	$edit_template = file_get_contents($basepath."/modules/default/extras/crudify_templates/edit.tpl");
+	$edit_template = file_get_contents($basepath."/modules/bolts/extras/crudify_templates/edit.tpl");
 	$form_fields = "";
-	$form_field_template = file_get_contents($basepath."/modules/default/extras/crudify_templates/editTextInput.tpl");
+	$form_field_template = file_get_contents($basepath."/modules/bolts/extras/crudify_templates/editTextInput.tpl");
 	foreach ($columns as $colname => $column) {
 		$field_string = $form_field_template;
 		if ($colname != $identity_col) {
@@ -152,7 +152,7 @@ if (!is_array($pk)) {
 				"FIELD_LABEL"    => ucfirst($colname),
 				"FIELD_VAR_NAME" => $colname,
 			);			
-			$field_string = Cts_Common::replaceWithArray($field_string, $input_replacements);
+			$field_string = Bolts_Common::replaceWithArray($field_string, $input_replacements);
 			$form_fields .= $field_string;
 		}
 	}
@@ -175,13 +175,13 @@ if (!is_array($pk)) {
 		"FORM_FIELDS"                => $form_fields,
 		"DELETE_URL"                 => $delete_url,
 	);
-	$edit_template = Cts_Common::replaceWithArray($edit_template, $edit_template_replacements);
+	$edit_template = Bolts_Common::replaceWithArray($edit_template, $edit_template_replacements);
 
 	file_put_contents($theme_dir."/edit.tpl", $edit_template);
 
 	// add index action
 	$index_method = new Zend_CodeGenerator_Php_Method();
-	$index_method_body = file_get_contents($basepath."/modules/default/extras/crudify_templates/indexAction.txt");
+	$index_method_body = file_get_contents($basepath."/modules/bolts/extras/crudify_templates/indexAction.txt");
 	$index_action_replacements = array(
 		"TABLE_OBJECT_VAR" => $table_object_var,
 		"TABLE_CLASSNAME"  => $object_name,
@@ -191,12 +191,12 @@ if (!is_array($pk)) {
 		"ROWSET_VAR"       => strtolower($name),
 		"INDEX_URL"        => $index_url,
 	);
-	$index_method_body = Cts_Common::replaceWithArray($index_method_body, $index_action_replacements);
+	$index_method_body = Bolts_Common::replaceWithArray($index_method_body, $index_action_replacements);
 	$index_method->setName('indexAction')->setBody($index_method_body);
 	$controller_class->setMethod($index_method);
 
 	// load index template
-	$index_template = file_get_contents($basepath."/modules/default/extras/crudify_templates/index.tpl");
+	$index_template = file_get_contents($basepath."/modules/bolts/extras/crudify_templates/index.tpl");
 	if ($is_admin) {
 		$index_template_replacements = array(
 			"OBJECT_NICENAME"	=> $name,
@@ -216,13 +216,13 @@ if (!is_array($pk)) {
 			"INDEX_URL" 		=> $index_url,
 		);
 	}
-	$index_template = Cts_Common::replaceWithArray($index_template, $index_template_replacements);
+	$index_template = Bolts_Common::replaceWithArray($index_template, $index_template_replacements);
 
 	file_put_contents($theme_dir."/index.tpl", $index_template);
 
 	// add delete method
 	$delete_method = new Zend_CodeGenerator_Php_Method();
-	$delete_method_body = file_get_contents($basepath."/modules/default/extras/crudify_templates/deleteAction.txt");
+	$delete_method_body = file_get_contents($basepath."/modules/bolts/extras/crudify_templates/deleteAction.txt");
 	$delete_action_replacements = array(
 		"TABLE_OBJECT_VAR" 	=> $table_object_var,
 		"TABLE_CLASSNAME" 	=> $object_name,
@@ -233,12 +233,12 @@ if (!is_array($pk)) {
 		"DELETE_URL" 		=> $delete_url,	
 		"INDEX_URL" 		=> $index_url,
 	);
-	$delete_method_body = Cts_Common::replaceWithArray($delete_method_body, $delete_action_replacements);	
+	$delete_method_body = Bolts_Common::replaceWithArray($delete_method_body, $delete_action_replacements);	
 	$delete_method->setName('deleteAction')->setBody($delete_method_body);
 	$controller_class->setMethod($delete_method);	
 
 	// load delete template
-	$delete_template = file_get_contents($basepath."/modules/default/extras/crudify_templates/delete.tpl");	
+	$delete_template = file_get_contents($basepath."/modules/bolts/extras/crudify_templates/delete.tpl");	
 	if ($is_admin) {
 		$delete_template_replacements = array(
 			"OBJECT_NICENAME"            => $name,
@@ -260,7 +260,7 @@ if (!is_array($pk)) {
 			"INDEX_URL"                  => $index_url,
 		);
 	}
-	$delete_template = Cts_Common::replaceWithArray($delete_template, $delete_template_replacements);
+	$delete_template = Bolts_Common::replaceWithArray($delete_template, $delete_template_replacements);
 
 	file_put_contents($theme_dir."/delete.tpl", $delete_template);
 

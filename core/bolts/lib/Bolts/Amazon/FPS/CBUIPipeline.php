@@ -23,7 +23,7 @@
 /**
  * Base class for CBUI pipelines. 
  */
-abstract class Cts_Amazon_FPS_CBUIPipeline {
+abstract class Bolts_Amazon_FPS_CBUIPipeline {
 
 	const SIGNATURE_KEYNAME = "signature";
 	const SIGNATURE_METHOD_KEYNAME = "signatureMethod";
@@ -62,7 +62,7 @@ abstract class Cts_Amazon_FPS_CBUIPipeline {
      * @param string $accessKeyId    Amazon Web Services Access Key ID.
      * @param string $secretAccessKey   Amazon Web Services Secret Access Key.
      */
-    function Cts_Amazon_FPS_CBUIPipeline($pipelineName, $awsAccessKey, $awsSecretKey) {
+    function Bolts_Amazon_FPS_CBUIPipeline($pipelineName, $awsAccessKey, $awsSecretKey) {
         $this->awsSecretKey = $awsSecretKey;
         $this->awsAccessKey = $awsAccessKey;
         
@@ -171,7 +171,7 @@ abstract class Cts_Amazon_FPS_CBUIPipeline {
         if (!isset ($requestURI)) {
         	$requestURI = "/";
         }
-		$uriencoded = implode("/", array_map(array("Cts_Amazon_FPS_CBUIPipeline", "_urlencode"), explode("/", $requestURI)));
+		$uriencoded = implode("/", array_map(array("Bolts_Amazon_FPS_CBUIPipeline", "_urlencode"), explode("/", $requestURI)));
         $data .= $uriencoded;
         $data .= "\n";
         

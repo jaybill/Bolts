@@ -1,18 +1,18 @@
 <?php
 
 /*
-	Class: Cts_View_Renderer
+	Class: Bolts_View_Renderer
 
 	About: Author
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	About: See Also
 		Zend_View_Interface
 */
-class Cts_View_Renderer implements Zend_View_Interface {
+class Bolts_View_Renderer implements Zend_View_Interface {
 
 	/* Group: Variables */
 
@@ -32,7 +32,7 @@ class Cts_View_Renderer implements Zend_View_Interface {
 			extraParams - TBD
 	*/
     public function __construct($tmplPath = null, $extraParams = array()) {
-        $this->_smarty = new Cts_View_Smarty;
+        $this->_smarty = new Bolts_View_Smarty;
 		
         if (!is_null($tmplPath)) {
             $this->setScriptPath($tmplPath);
@@ -233,11 +233,23 @@ class Cts_View_Renderer implements Zend_View_Interface {
     public function render($name) {
     	// get the complete name of the template
         $theme_locations = Zend_Registry::get("theme_locations");
+		$basepath = Zend_Registry::get("basepath");
+		
+		$front = Zend_Controller_Front::getInstance();
+        $request = $front->getRequest();
+        $module_name = $request->getModuleName();  
+        $module_views_root = "";
 
-        if($this->_smarty->_tpl_vars['isAdminController']){
-            $fallback_path = $theme_locations['admin']['default_theme']['path'];
+        if($module_name == "bolts"){
+        	$module_views_root = $basepath . "/core/bolts/views";        	
         } else {
-            $fallback_path = $theme_locations['frontend']['default_theme']['path'];
+        	$module_views_root = $basepath . "/nuts/".$module_name."/views"; 
+        }
+		
+        if($this->_smarty->_tpl_vars['isAdminController']){
+            $fallback_path = $module_views_root."/admin/controllers";
+        } else {
+            $fallback_path = $module_views_root."/frontend/controllers";
         }
         
     	$template_filename = $this->_smarty->template_dir . "/" . $name;
@@ -245,14 +257,9 @@ class Cts_View_Renderer implements Zend_View_Interface {
     	// if it exists in the *current* theme, use it, if not, try the default theme
         
     	if(!file_exists($template_filename)){
-                
-                $front = Zend_Controller_Front::getInstance();
-        	$request = $front->getRequest();
-        	$module_name = $request->getModuleName();        	
-        	$path = $fallback_path . "/modules/" .$module_name;
-
-        	if(is_readable($path)){        		
-                        $template_filename = $path . "/" . $name;
+             if(is_readable($fallback_path)){        		
+                        $template_filename = $fallback_path . "/" . $name;
+                        //dd($template_filename);
         	} else {
         		// We're out of ideas. Sorry.
         		throw new Zend_Exception("Provided template path is not valid: ". $path);

@@ -7,13 +7,13 @@
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	About: See Also
-		<Cts_Controller_Action_Abstract>
-		<Cts_Controller_Action_Admin>
+		<Bolts_Controller_Action_Abstract>
+		<Bolts_Controller_Action_Admin>
 */
-class AdminController extends  Cts_Controller_Action_Admin {
+class AdminController extends  Bolts_Controller_Action_Admin {
 
 	/* Group: Instance Methods */
 
@@ -38,7 +38,7 @@ class AdminController extends  Cts_Controller_Action_Admin {
 	*/
     function indexAction() {
 		$params = array('username' => $this->_identity->username);
-		$additional = $this->_cts_plugin->doFilter($this->_mca, $params); // FILTER HOOK
+		$additional = $this->_Bolts_plugin->doFilter($this->_mca, $params); // FILTER HOOK
 		foreach ($additional as $key => $value) {
 			$this->view->$key = $value;
 		}

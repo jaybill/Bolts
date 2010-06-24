@@ -1,18 +1,18 @@
 <?php
 
 /*
-	Class: Cts_Acl
+	Class: Bolts_Acl
 
 	About: Author
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	About: See Also
 		Zend_Acl
 */
-class Cts_Acl extends Zend_Acl {
+class Bolts_Acl extends Zend_Acl {
 
 	/* Group: Constructors */
 
@@ -78,7 +78,7 @@ class Cts_Acl extends Zend_Acl {
     		// Add the role and specifiy that as the parent. On the first pass, this is null.
 			
 			if(!$this->hasRole($role->id)){
-				Cts_Log::info("Adding role ".$role->shortname);
+				Bolts_Log::info("Adding role ".$role->shortname);
     			$this->addRole(new Zend_Acl_Role($role->id), $parent_role);
 			}
 			    		

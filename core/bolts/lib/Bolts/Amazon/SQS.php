@@ -1,22 +1,22 @@
 <?php
 /**
- * communit.as
+ * Bolts
  * @copyright (C)2008 Jaybill McCarthy, All Rights Reserved.
  * @category communitas
  * @package communitas
  * @author Jaybill McCarthy
- * @link http://communit.as communit.as
- * @license http://communit.as/docs/license License
+ * @link http://Bolts Bolts
+ * @license http://Bolts/docs/license License
  */
 
 /**
  *
  * @package communitas
  * @subpackage core_lib
- * @license http://communit.as/docs/license License 
+ * @license http://Bolts/docs/license License 
  */
 
-	class Cts_Amazon_SQS
+	class Bolts_Amazon_SQS
 	{
 		
 		var $_key        = "";
@@ -28,7 +28,7 @@
 				
 		var $queue_url;
 
-		function Cts_Amazon_SQS($key, $secret, $queue_url = null)
+		function Bolts_Amazon_SQS($key, $secret, $queue_url = null)
 		{
 			$this->_key    = $key;
 			$this->_secret = $secret;
@@ -84,7 +84,7 @@
 			if($xml === false){
 				return false;	
 			} else {				
-				Cts_Log::report("sent message", $xml->SendMessageResult->MessageId,Zend_Log::INFO);
+				Bolts_Log::report("sent message", $xml->SendMessageResult->MessageId,Zend_Log::INFO);
 				return strval($xml->SendMessageResult->MessageId);
 			}
 		}
@@ -111,10 +111,10 @@
 			$xml = $this->go("ReceiveMessage", $params, $queue_url);
 
 			if($xml === false){
-				Cts_Log::report('sqs cannot recieve messages',null,Zend_Log::ERR);				
+				Bolts_Log::report('sqs cannot recieve messages',null,Zend_Log::ERR);				
 				return false;
 			} else {
-				Cts_Log::report('sqs recieved messages',$xml,Zend_Log::INFO);
+				Bolts_Log::report('sqs recieved messages',$xml,Zend_Log::INFO);
 				$out = array();
 				foreach($xml->ReceiveMessageResult->Message as $m){
 					$out[] = array("MessageId" => strval($m->MessageId), "MessageBody" => urldecode(strval($m->Body)));
@@ -196,16 +196,16 @@
 			$sig  = $this->base64($sha1);
 			$params['Signature'] = $sig;
 
-			Cts_Log::report('sqs go params',$params,Zend_Log::INFO);
-			$output = Cts_Url::get ($url,$params);
+			Bolts_Log::report('sqs go params',$params,Zend_Log::INFO);
+			$output = Bolts_Url::get ($url,$params);
 			
 			$xmlstr =$output['output'];
-			Cts_Log::report("output from sqs", $output,Zend_Log::DEBUG);
+			Bolts_Log::report("output from sqs", $output,Zend_Log::DEBUG);
 			try{
 				$xml = new SimpleXMLElement($xmlstr);
 				
 				if($output['http_code'] == 200 and !isset($xml->Errors)){			
-					Cts_Log::report("xml from sqs", $xml,Zend_Log::DEBUG);
+					Bolts_Log::report("xml from sqs", $xml,Zend_Log::DEBUG);
 					return $xml;
 				} else {
 					return false;

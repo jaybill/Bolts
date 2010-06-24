@@ -1,18 +1,18 @@
 <?php
 
 /*
-	Class: Cts_Controller_Action_Abstract
+	Class: Bolts_Controller_Action_Abstract
 
 	About: Author
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	About: See Also
 		Zend_Controller_Action
 */
-abstract class Cts_Controller_Action_Abstract extends Zend_Controller_Action {
+abstract class Bolts_Controller_Action_Abstract extends Zend_Controller_Action {
 
 	/* Group: Instance Variables */
 
@@ -94,8 +94,8 @@ abstract class Cts_Controller_Action_Abstract extends Zend_Controller_Action {
 		$this->_host_id = Zend_Registry::get('host_id');
 		$this->view->host_id = $this->_host_id;
 		$this->view->session_id = Zend_Session::getId();
-		$this->view->site_url = Cts_Registry::get('site_url');
-		$this->view->site_name = Cts_Registry::get('site_name');
+		$this->view->site_url = Bolts_Registry::get('site_url');
+		$this->view->site_name = Bolts_Registry::get('site_name');
 		$this->registry = Zend_Registry::getInstance();		
 		$this->session = new Zend_Session_Namespace('Default');
 
@@ -134,10 +134,10 @@ abstract class Cts_Controller_Action_Abstract extends Zend_Controller_Action {
 			$this->_identity = null;
 			$this->view->isLoggedIn = false;
 		}
-		$appNamespace = new Zend_Session_Namespace('Cts_Temp');
+		$appNamespace = new Zend_Session_Namespace('Bolts_Temp');
 		$this->view->last_login = $appNamespace->last_login;
 		
-		$this->_cts_plugin = Cts_Plugin::getInstance();
+		$this->_Bolts_plugin = Bolts_Plugin::getInstance();
 
 		$this->_theme_locations = Zend_Registry::get('theme_locations');
 		
@@ -151,7 +151,7 @@ abstract class Cts_Controller_Action_Abstract extends Zend_Controller_Action {
 				'current_theme' => $this->_theme_locations['frontend']['current_theme']
 			)
 		);
-		$theme_params = $this->_cts_plugin->doFilter('current_themes', $theme_params); // FILTER HOOK
+		$theme_params = $this->_Bolts_plugin->doFilter('current_themes', $theme_params); // FILTER HOOK
 		if (file_exists($theme_params['admin']['current_theme']['path'])) {
 			$this->_theme_locations['admin']['current_theme'] = $theme_params['admin']['current_theme'];
 		}
@@ -174,17 +174,17 @@ abstract class Cts_Controller_Action_Abstract extends Zend_Controller_Action {
 		$this->view->default_theme_controller_path = $this->_theme_locations['frontend']['default_theme']['path'].'/modules/'.$this->getRequest()->getModuleName()."/".$this->getRequest()->getControllerName();
 		$this->view->default_theme_module_path = $this->_theme_locations['frontend']['default_theme']['path'].'/modules/'.$this->getRequest()->getModuleName();
 
-		Cts_Log::report("Current path ".$this->_mca, null, Zend_Log::INFO);
+		Bolts_Log::report("Current path ".$this->_mca, null, Zend_Log::INFO);
 
 		$this->view->isAdminController = false;
 
-		$this->view->title_prefix = Cts_Registry::get('title_prefix');
+		$this->view->title_prefix = Bolts_Registry::get('title_prefix');
 
 		$locale_is_valid = true;
-		$default_locale_code = str_replace('_', '-', trim(strtolower(Cts_Registry::get('default_locale'))));
+		$default_locale_code = str_replace('_', '-', trim(strtolower(Bolts_Registry::get('default_locale'))));
 		$this->locale_code = $default_locale_code;
 
-		if (Cts_Registry::get('enable_localization') == '1') {
+		if (Bolts_Registry::get('enable_localization') == '1') {
 			// to set the locale code, look in the URL, not in the cookie
 			// the only thing that should check the cookie is the home page and optionally the locale chooser page
 			$locales_table = new Locales();
@@ -192,7 +192,7 @@ abstract class Cts_Controller_Action_Abstract extends Zend_Controller_Action {
 			$db_locales = array_keys($db_locales_full);
 
 			// Get the locales allowed in the config
-			$allowed_locales = explode(',', Cts_Registry::get('allowed_locales'));
+			$allowed_locales = explode(',', Bolts_Registry::get('allowed_locales'));
 			if (!empty($allowed_locales) && (bool)array_filter($allowed_locales)) {
 				$allowed_locales = array_map('trim', $allowed_locales);
 				$allowed_locales = array_map('strtolower', $allowed_locales);
@@ -211,7 +211,7 @@ abstract class Cts_Controller_Action_Abstract extends Zend_Controller_Action {
 			$this->view->locale_codes = $all_locales;
 
 			// Get the locales allowed on the frontend in the config
-			$live_locales = explode(',', Cts_Registry::get('live_locales'));
+			$live_locales = explode(',', Bolts_Registry::get('live_locales'));
 			if (!empty($live_locales) && (bool)array_filter($live_locales)) {
 				$live_locales = array_map('trim', $live_locales);
 				$live_locales = array_map('strtolower', $live_locales);
@@ -239,7 +239,7 @@ abstract class Cts_Controller_Action_Abstract extends Zend_Controller_Action {
 					}
 				}
 				if ($locale_is_valid) {
-					$store_locales = explode(',', Cts_Registry::get('store_enabled_locales'));
+					$store_locales = explode(',', Bolts_Registry::get('store_enabled_locales'));
 					if (!empty($store_locales) && (bool)array_filter($store_locales)) {
 						$store_locales = array_map('trim', $store_locales);
 						$store_locales = array_map('strtolower', $store_locales);
@@ -254,7 +254,7 @@ abstract class Cts_Controller_Action_Abstract extends Zend_Controller_Action {
 					}
 				}
 				$locale_params = array('request' => $this->_request, 'locale_code' => $locale_code, 'locale_is_valid' => $locale_is_valid);
-				$locale_params = $this->_cts_plugin->doFilter('validate_locale', $locale_params); // FILTER HOOK
+				$locale_params = $this->_Bolts_plugin->doFilter('validate_locale', $locale_params); // FILTER HOOK
 				$locale_code = $locale_params['locale_code'];
 				$locale_is_valid = $locale_params['locale_is_valid'];
 				if ( $locale_is_valid == true) {
@@ -277,13 +277,13 @@ abstract class Cts_Controller_Action_Abstract extends Zend_Controller_Action {
 						$this->view->locale_code = $default_locale_code;
 
 						// Checking hasIdentity() here would be incorrect, as guests do not have identities, but may have access to this action
-						if (@Cts_ResourceCheck::isAllowed("choose", "default", $this->_identity->username, 'Locale')) {
-							$this->_redirect("/default/locale/choose/");
+						if (@Bolts_ResourceCheck::isAllowed("choose", "default", $this->_identity->username, 'Locale')) {
+							$this->_redirect("/bolts/locale/choose/");
 						} else {
 							if (empty($this->_request->locale)) {
 								$this->_redirect("/", array('code' => 301));
 							} else {
-								$this->_redirect("/default/auth/missing/");
+								$this->_redirect("/bolts/auth/missing/");
 							}
 						}
 					}
@@ -292,15 +292,15 @@ abstract class Cts_Controller_Action_Abstract extends Zend_Controller_Action {
 				$this->_redirect("/".$_COOKIE['locale_code']."/", array(), false);
 			} else {
 				// Checking hasIdentity() here would be incorrect, as guests do not have identities, but may have access to this action
-				if (@Cts_ResourceCheck::isAllowed("choose", "default", $this->_identity->username, 'Locale')) {
-					$this->_redirect($default_locale_code."/default/locale/choose/");
+				if (@Bolts_ResourceCheck::isAllowed("choose", "default", $this->_identity->username, 'Locale')) {
+					$this->_redirect($default_locale_code."/bolts/locale/choose/");
 				} else {
-					$this->_redirect($default_locale_code."/default/auth/missing/");
+					$this->_redirect($default_locale_code."/bolts/auth/missing/");
 				}
 			}
 		}
 
-		$this->view->custom_metadata = Cts_Registry::get('custom_metadata');
+		$this->view->custom_metadata = Bolts_Registry::get('custom_metadata');
 
 		$language = substr($this->locale_code, 0, strpos($this->locale_code, '-'));
 		// TODO - these should not be hardcoded here
@@ -316,9 +316,9 @@ abstract class Cts_Controller_Action_Abstract extends Zend_Controller_Action {
 				$this->view->format_datetime_small = "%e %b %Y, %l:%M%p";
 				break;			
 			default:
-				$this->view->format_date = Cts_Registry::get('format_date');
-				$this->view->format_datetime = Cts_Registry::get('format_datetime');
-				$this->view->format_datetime_small = Cts_Registry::get('format_datetime_small');
+				$this->view->format_date = Bolts_Registry::get('format_date');
+				$this->view->format_datetime = Bolts_Registry::get('format_datetime');
+				$this->view->format_datetime_small = Bolts_Registry::get('format_datetime_small');
 				break;
 		}
 		$this->view->current_year = date("Y");
@@ -336,11 +336,11 @@ abstract class Cts_Controller_Action_Abstract extends Zend_Controller_Action {
 		// }
 
 		// this is a way to force the browser to reload some scripts
-		if (Cts_Registry::get('uncache_css_js_version')) {
-			$this->view->uncache_version = "?v=".Cts_Registry::get('uncache_css_js_version');
+		if (Bolts_Registry::get('uncache_css_js_version')) {
+			$this->view->uncache_version = "?v=".Bolts_Registry::get('uncache_css_js_version');
 		}
-		if (Cts_Registry::get('uncache_flash_version') ){
-			$this->view->uncache_flash = "?v=".Cts_Registry::get('uncache_flash_version');
+		if (Bolts_Registry::get('uncache_flash_version') ){
+			$this->view->uncache_flash = "?v=".Bolts_Registry::get('uncache_flash_version');
 		}
 
 		// Set the content type to UTF-8
@@ -384,21 +384,21 @@ abstract class Cts_Controller_Action_Abstract extends Zend_Controller_Action {
 		$cache_name = 'navigation_'.$this->locale_code.'-'.md5(implode($unique_ids, "-")); // MD5 The Unique IDs to shorten the cache name
 		$cache_tags = array('navigation', $this->locale_code);
 		$nav_items_temp = false;
-		if (Cts_Registry::get('enable_navigation_cache') == '1') {
-			$nav_items_temp = Cts_Cache::load($cache_name);
+		if (Bolts_Registry::get('enable_navigation_cache') == '1') {
+			$nav_items_temp = Bolts_Cache::load($cache_name);
 		}
 		if ($nav_items_temp === false || !isset($nav_items_temp)) {
 			$nav_items_temp = array();
 			foreach ($unique_ids as $nav_role_id) {
 				$nav_items_temp = array_merge($nav_items_temp, $nav_table->getNavTree($nav_role_id));
 			}
-			if (Cts_Registry::get('enable_navigation_cache') == '1') {
-				Cts_Cache::save($nav_items_temp, $cache_name, $cache_tags);
+			if (Bolts_Registry::get('enable_navigation_cache') == '1') {
+				Bolts_Cache::save($nav_items_temp, $cache_name, $cache_tags);
 			}
 		}
 
 		$navparams = array('nav_items' => $nav_items_temp, 'request' => $this->_request, 'locale_code' => $this->locale_code);
-		$navparams = $this->_cts_plugin->doFilter('controller_nav', $navparams); // FILTER HOOK
+		$navparams = $this->_Bolts_plugin->doFilter('controller_nav', $navparams); // FILTER HOOK
 		$this->view->nav_items = $navparams['nav_items'];
 		// TODO - Rich fix this
 		// // VIEW STATES
@@ -406,7 +406,7 @@ abstract class Cts_Controller_Action_Abstract extends Zend_Controller_Action {
 		// 	$this->session->view_states = array();
 		// }
 		// // TODO - allow use of regular expressions such as /auth/*
-		// $last_visited_pages_filter = explode('|', Cts_Registry::get('last_visited_pages_filter'));
+		// $last_visited_pages_filter = explode('|', Bolts_Registry::get('last_visited_pages_filter'));
 		// if (!in_array($this->_uri, $last_visited_pages_filter)) {
 		// 	$this->session->view_states['last_visited'] = $this->_uri;
 		// }
@@ -416,7 +416,7 @@ abstract class Cts_Controller_Action_Abstract extends Zend_Controller_Action {
 		$params['request'] = $this->_request;
 		$params['locale_code'] = $this->locale_code;
 		$params['session'] = $this->session;
-		$additional = $this->_cts_plugin->doFilter('controller_init', $params); // FILTER HOOK
+		$additional = $this->_Bolts_plugin->doFilter('controller_init', $params); // FILTER HOOK
 		unset($additional['request']); // we don't want to send the request to the view
 		if( isset($additional['filter_redirect']) ){
 			$this->_redirect($additional['filter_redirect']);
@@ -432,7 +432,7 @@ abstract class Cts_Controller_Action_Abstract extends Zend_Controller_Action {
 		Function: _T
 	*/
 	protected function _T($key, $replace = null, $do_translate = true) {
-		return Cts_Translate::translate($this->locale_code, 'default', $key, $replace, $do_translate);
+		return Bolts_Translate::translate($this->locale_code, 'default', $key, $replace, $do_translate);
 	}
 
 	// TODO - MOVE ALL PAGING METHODS TO A SEPARATE LIBRARY
@@ -512,7 +512,7 @@ abstract class Cts_Controller_Action_Abstract extends Zend_Controller_Action {
 		if ($auto_add_locale) {
 			$urlfilter_params = array('locale_code' => $this->locale_code);
 		}
-		$url_filter = new Cts_Url_Filter();
+		$url_filter = new Bolts_Url_Filter();
 		return parent::_redirect($url_filter->filter($url, $urlfilter_params), $options);
 	}
 

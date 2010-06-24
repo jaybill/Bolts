@@ -1,15 +1,15 @@
 <?php
 
 /*
-	Class: Cts_Validate
+	Class: Bolts_Validate
 
 	About: Author
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 */
-class Cts_Validate {
+class Bolts_Validate {
 
 	/* Group: Static Methods */
 

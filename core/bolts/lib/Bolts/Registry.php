@@ -1,18 +1,18 @@
 <?php
 
 /*
-	Class: Cts_Registry
+	Class: Bolts_Registry
 
 	About: Author
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	About: See Also
 		Zend_Registry
 */
-class Cts_Registry extends Zend_Registry {
+class Bolts_Registry extends Zend_Registry {
 
 	/* Group: Static Methods */
 

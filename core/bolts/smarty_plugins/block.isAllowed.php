@@ -7,7 +7,7 @@
 		Rich Joslin
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	Function: smarty_block_translate
 		Identical to <smarty_block_translate>.
@@ -32,21 +32,21 @@
 
 	About: See Also
 		- <smarty_block_translate>
-		- <Cts_Translate/translate>
+		- <Bolts_Translate/translate>
 */
 function smarty_block_isAllowed($params, $content, $smarty, $repeat) {
 	$tpl_vars = $smarty->_tpl_vars;
     // only output on the closing tag
     if (!$repeat) {
         if (isset($content) && isset($params['controller'])) {        	
-        	if(Cts_ResourceCheck::isAllowed($params['resource'],$params['module'],$params['username'],$params['controller'])){
+        	if(Bolts_ResourceCheck::isAllowed($params['resource'],$params['module'],$params['username'],$params['controller'])){
         		return $content;
         	} else {
         		return null;
         	}
 		}
         if (isset($content) && !isset($params['controller'])) {        	
-        	if(Cts_ResourceCheck::isAllowed($params['resource'],$params['module'],$params['username'])){
+        	if(Bolts_ResourceCheck::isAllowed($params['resource'],$params['module'],$params['username'])){
         		return $content;
         	} else {
         		return null;

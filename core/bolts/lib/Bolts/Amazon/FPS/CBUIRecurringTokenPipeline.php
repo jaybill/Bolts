@@ -22,14 +22,14 @@
 
 
 
-class Cts_Amazon_FPS_CBUIRecurringTokenPipeline extends Cts_Amazon_FPS_CBUIPipeline {
+class Bolts_Amazon_FPS_CBUIRecurringTokenPipeline extends Bolts_Amazon_FPS_CBUIPipeline {
 
     /**
      * @param string $accessKeyId    Amazon Web Services Access Key ID.
      * @param string $secretAccessKey   Amazon Web Services Secret Access Key.
      */
-    function Cts_Amazon_FPS_CBUIRecurringTokenPipeline($awsAccessKey, $awsSecretKey) {
-        parent::Cts_Amazon_FPS_CBUIPipeline("Recurring", $awsAccessKey, $awsSecretKey);
+    function Bolts_Amazon_FPS_CBUIRecurringTokenPipeline($awsAccessKey, $awsSecretKey) {
+        parent::Bolts_Amazon_FPS_CBUIPipeline("Recurring", $awsAccessKey, $awsSecretKey);
     }
 
     /**

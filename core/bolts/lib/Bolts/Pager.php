@@ -1,15 +1,15 @@
 <?php
 
 /*
-	Class: Cts_Pager
+	Class: Bolts_Pager
 
 	About: Author
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 */
-class Cts_Pager {
+class Bolts_Pager {
 
 	/* Group: Static Methods */
 

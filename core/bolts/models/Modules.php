@@ -7,12 +7,12 @@
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	About: See Also
-	 	<Cts_Db_Table_Abstract>
+	 	<Bolts_Db_Table_Abstract>
 */
-class Modules extends Cts_Db_Table_Abstract {
+class Modules extends Bolts_Db_Table_Abstract {
 
 	/* Group: Instance Variables */
 
@@ -20,7 +20,7 @@ class Modules extends Cts_Db_Table_Abstract {
 		Variable: $_name
 			The name of the table or view to interact with in the data source.
 	*/
-	protected $_name = 'default_modules';
+	protected $_name = 'bolts_modules';
 
 	/*
 		Variable: $_primary
@@ -96,7 +96,7 @@ class Modules extends Cts_Db_Table_Abstract {
 			}
 		}
 		if ($include_default) {
-			$enabled_modules[] = "default";
+			$enabled_modules[] = "bolts";
 		}
 		return $enabled_modules;
 	}
@@ -256,7 +256,7 @@ class Modules extends Cts_Db_Table_Abstract {
 		if (empty($config)) {
 			
 			$basepath = Zend_Registry::get("basepath");
-			$module_ini_file = $basepath."/modules/".$module_id."/module.ini";
+			$module_ini_file = $basepath."/core/".$module_id."/module.ini";
 
 			if (file_exists($module_ini_file)) {
 				$config = parse_ini_file($module_ini_file, true);				
@@ -299,7 +299,7 @@ class Modules extends Cts_Db_Table_Abstract {
 				}
 			}
 		} catch (Exception $e){
-			Cts_Log::report($e->getMessage(),$e, Zend_Log::ERR);
+			Bolts_Log::report($e->getMessage(),$e, Zend_Log::ERR);
 		}
 	}
 
@@ -324,7 +324,7 @@ class Modules extends Cts_Db_Table_Abstract {
 
 			if ($current_version < $required_version) {
 				// database for this module is out of date.  get scripts to run.
-				$script = new Cts_Db_Script();
+				$script = new Bolts_Db_Script();
 				$change_scripts = array();
 				$all_scripts = $script->getScripts($module_id);
 				foreach ($all_scripts as $script) {
@@ -338,7 +338,7 @@ class Modules extends Cts_Db_Table_Abstract {
 				foreach ($change_scripts as $num => $script_name) {
 					if ($num > $current_version and $num <= $required_version) {
 
-						$change_script = new Cts_Db_Script($module_id, $script_name);
+						$change_script = new Bolts_Db_Script($module_id, $script_name);
 
 						if ($change_script === false) {
 							$error_string = "CANT_UPGRADE - Script ".$script_name." for module ".$module_id ." failed. Errors were: ";
@@ -350,7 +350,7 @@ class Modules extends Cts_Db_Table_Abstract {
 							$db_versions_table->setCurrentVersion($module_id, $num);
 							// UPDATE ALL VIEWS
 							// TODO - check to see if the view file exists
-							$views_script = new Cts_Db_Script($module_id, 'views');
+							$views_script = new Bolts_Db_Script($module_id, 'views');
 							// TODO - report errors if the view script exists and fails to run
 						}
 					}
@@ -369,7 +369,7 @@ class Modules extends Cts_Db_Table_Abstract {
 	*/
 	function setup($module_id) {
 		$basepath = Zend_Registry::get("basepath");
-		$module_dir = $basepath."/modules";
+		$module_dir = $basepath."/core";
 		$full_dir = $module_dir."/".$module_id;
 		$subdirs = array("models", "plugins", "controllers", "lib");
 		$tmp_include_path = "";
@@ -389,7 +389,7 @@ class Modules extends Cts_Db_Table_Abstract {
 			$this->upgradeDatabase($module_id);
 			$this->setDefaultConfig($module_id);
 	
-			$ap = Cts_Plugin::getInstance();
+			$ap = Bolts_Plugin::getInstance();
 	
 			if (count($module_cfg['plugins']) > 0) {
 				foreach ($module_cfg['plugins'] as $hook => $plugin) {
@@ -406,7 +406,7 @@ class Modules extends Cts_Db_Table_Abstract {
 				}
 			}
 		} catch (Exception $e) {
-			Cts_Log::report("Could not set up ".$module_id, $e, Zend_Log::ERR);
+			Bolts_Log::report("Could not set up ".$module_id, $e, Zend_Log::ERR);
 			// $where = $this->getAdapter()->quoteInto("id = ?", $module_id);
 			// $this->delete($where);
 		}
@@ -429,7 +429,7 @@ class Modules extends Cts_Db_Table_Abstract {
 			"success" => null, // TODO : clarify data types in this array
 			"notice" => null,
 		);
-		$params = $this->_cts_plugin->doFilter($filter_name, $params);
+		$params = $this->_Bolts_plugin->doFilter($filter_name, $params);
 		$this->success = $params['success'];
 		$this->notice = $params['notice'];
 		$this->errors = $params['errors'];

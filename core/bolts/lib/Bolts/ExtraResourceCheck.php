@@ -1,6 +1,6 @@
 <?php
 
-class Cts_ExtraResourceCheck{
+class Bolts_ExtraResourceCheck{
 	
 	static function isAllowed($resource,$module = "default",$username = null){
 		$users_roles_table = new UsersRoles();

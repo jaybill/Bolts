@@ -7,7 +7,7 @@
 		Communitas Module Generator
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 */
 class MODULE_NAME_UC_Plugins_Setup {
 
@@ -17,11 +17,11 @@ class MODULE_NAME_UC_Plugins_Setup {
 		Function: install
 	*/
 	function install($params) {
-		$script = new Cts_Db_Script("MODULE_NAME_LOWER", "install");
+		$script = new Bolts_Db_Script("MODULE_NAME_LOWER", "install");
 		if (!$script) {
 			$params['errors'] = $script->errors;
 		}
-		Cts_Cache::removeByTags(array('navigation'));
+		Bolts_Cache::removeByTags(array('navigation'));
 		return $params;
 	}
 
@@ -29,11 +29,11 @@ class MODULE_NAME_UC_Plugins_Setup {
 		Function: uninstall
 	*/
 	function uninstall($params) {
-		$script = new Cts_Db_Script("MODULE_NAME_LOWER", "uninstall");
+		$script = new Bolts_Db_Script("MODULE_NAME_LOWER", "uninstall");
 		if (!$script) {
 			$params['errors'] = $script->errors;
 		}
-		Cts_Cache::removeByTags(array('navigation'));
+		Bolts_Cache::removeByTags(array('navigation'));
 		return $params;
 	}
 
@@ -41,7 +41,7 @@ class MODULE_NAME_UC_Plugins_Setup {
 		Function: enable
 	*/
 	function enable($params) {
-		Cts_Cache::removeByTags(array('navigation'));
+		Bolts_Cache::removeByTags(array('navigation'));
 		return $params;
 	}
 
@@ -49,7 +49,7 @@ class MODULE_NAME_UC_Plugins_Setup {
 		Function: disable
 	*/
 	function disable($params) {
-		Cts_Cache::removeByTags(array('navigation'));
+		Bolts_Cache::removeByTags(array('navigation'));
 		return $params;
 	}
 

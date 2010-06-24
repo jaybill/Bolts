@@ -1,15 +1,15 @@
 <?php
 
 /*
-	Class: Cts_Common
+	Class: Bolts_Common
 
 	About: Author
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 */
-class Cts_Common {
+class Bolts_Common {
 
 	/* Group: Static Methods */
 
@@ -364,7 +364,7 @@ class Cts_Common {
 	*/
 	static function makeTagArray($tag_string) {
 		$tags = explode (',', $tag_string);
-		$tag_filter = new Cts_FilterTags();
+		$tag_filter = new Bolts_FilterTags();
         $tag_array = array();
 		foreach ($tags as $tag) {
 			if (trim($tag) != "" and $tag != "none" and !is_null($tag)) {
@@ -906,7 +906,7 @@ class Cts_Common {
 	*/
 	static function XMLEntities($string) {
 		// copied from php manual comments
-		$string = preg_replace('/[^\x09\x0A\x0D\x20-\x7F]/e', Cts_Common::_privateXMLEntities("$0"), $string);
+		$string = preg_replace('/[^\x09\x0A\x0D\x20-\x7F]/e', Bolts_Common::_privateXMLEntities("$0"), $string);
 		return $string;
 	}
 

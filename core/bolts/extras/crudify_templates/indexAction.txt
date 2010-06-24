@@ -1,5 +1,5 @@
 $TABLE_OBJECT_VAR = new TABLE_CLASSNAME();
-$request = new Cts_Request($this->getRequest());
+$request = new Bolts_Request($this->getRequest());
 $whereclause = null;
 $params = array();
 $per_page = 10;

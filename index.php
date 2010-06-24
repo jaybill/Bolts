@@ -7,25 +7,20 @@
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://letsgetbolts.com/docs/license>
 */
 
 $ZZZZ_dump_include_path = @(boolean)$_GET['ZZZZ_dump_include_path'];
 
-if (in_array("xdebug", get_loaded_extensions())) {
-  $xdebug_on = true;
-  ini_set('display_errors', 1);
-} else {
-  $xdebug_on = false;
-}
-ini_set('mssql.secure_connection',1);
-$basepath = substr($_SERVER['SCRIPT_FILENAME'] , 0, strrpos( $_SERVER['SCRIPT_FILENAME'], "/"));
+$basepath = realpath(__DIR__);
 set_include_path(get_include_path().PATH_SEPARATOR.$basepath);
 $ip = $_SERVER['REMOTE_ADDR'];
 
 try {
 	
 	require_once('header.php');
+
+	
 	
 	if ($isInstalled) {
 		if (!(boolean)$config['application']['launched']) {
@@ -40,7 +35,7 @@ try {
 				header ("Location: ".$config['application']['prelaunch_url']);
 			}
 		}
-		if (Cts_Registry::get('on_screen_errors') === '1') {
+		if (Bolts_Registry::get('on_screen_errors') === '1') {
 			ini_set('display_errors', 1);
 			ERROR_REPORTING(E_ALL);
 		}
@@ -101,10 +96,12 @@ try {
 
 	Zend_Registry::set('smarty_config', $smarty_config_array);
 
-	$view = new Cts_View_Renderer(null, $smarty_config_array);
+	$view = new Bolts_View_Renderer(null, $smarty_config_array);
 
 	// Setup controller
 	$front = Zend_Controller_Front::getInstance();
+	$front->setDefaultModule("bolts");
+
 	$front->addModuleDirectory($module_dir);
 	$front->throwExceptions(true);
 	$front->setParam('noViewRenderer', false);
@@ -119,7 +116,7 @@ try {
 
 	if ($isInstalled) {
 		$front->registerPlugin(new AclPlugin);
-		$cts_plugin->doAction('bootstrap', array('front_controller' => $front)); // ACTION HOOK
+		$Bolts_plugin->doAction('bootstrap', array('front_controller' => $front)); // ACTION HOOK
 	} else {
 		$front->registerPlugin(new InstallPlugin);
 	}
@@ -128,16 +125,16 @@ try {
 	$front->setRouter($router);
 
 	if ($isInstalled) {
-		if (Cts_Registry::get('enable_localization') == '1') {
+		if (Bolts_Registry::get('enable_localization') == '1') {
 			$router->addRoute('default', new Zend_Controller_Router_Route(":locale/:module/:controller/:action/*", array(
 				'locale' => '',
-				'module' => "default",
+				'module' => "bolts",
 				'controller' => "index",
 				'action' => "index",
 			)));
 		} else {
 			$router->addRoute('default', new Zend_Controller_Router_Route(":module/:controller/:action/*", array(
-				'module' => "default",
+				'module' => "bolts",
 				'controller' => "index",
 				'action' => "index",
 			)));
@@ -146,7 +143,7 @@ try {
 			$routes = new Zend_Config_Ini($routes_file, 'default');
 			$router->addConfig($routes, 'routes');
 		}
-		$cts_plugin->doAction('bootstrap_routes', array('router' => $router)); // ACTION HOOK
+		$Bolts_plugin->doAction('bootstrap_routes', array('router' => $router)); // ACTION HOOK
 	}
 
 	if ($ZZZZ_dump_include_path) {
@@ -161,9 +158,11 @@ try {
 		d($ex->getMessage());
 		dd($ex);
 	} else {
-		Cts_Log::report("Database error", $ex, Zend_Log::EMERG);
+		Bolts_Log::report("Database error", $ex, Zend_Log::EMERG);
 		header("Location: /errordocuments/error_DB.html");
 	}
+	
+	
 } catch (Exception $ex) {
 	if (!empty($config) && canDebug($ip, $config)) {
 		d($ex->getMessage());
@@ -183,7 +182,7 @@ try {
 			default:
 				if ($isInstalled) {
 					header("Location: /errordocuments/error_500.html");
-					Cts_Log::report("Frontcontroller Error", $ex, Zend_Log::EMERG);
+					Bolts_Log::report("Frontcontroller Error", $ex, Zend_Log::EMERG);
 				} else {
 					d($ex->getMessage());
 					dd($ex);

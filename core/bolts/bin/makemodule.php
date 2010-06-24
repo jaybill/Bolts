@@ -16,10 +16,10 @@ if (!preg_match('/^\p{Ll}*$/', $module_name)) {
 
 echo("Module Name: ".$module_name."\n");
 
-$template_dir = $basepath."/modules/default/extras/makemodule_templates";
+$template_dir = $basepath."/modules/bolts/extras/makemodule_templates";
 $module_dir = $basepath."/modules/".$module_name;
-$frontend_theme_dir = $basepath."/themes/frontend/default/modules/".$module_name;
-$admin_theme_dir = $basepath."/themes/admin/default/modules/".$module_name;
+$frontend_theme_dir = $basepath."/themes/frontend/bolts/modules/".$module_name;
+$admin_theme_dir = $basepath."/themes/admin/bolts/modules/".$module_name;
 
 if (is_dir($module_dir)) {
 	die("This module already exists! I'm not just gonna overwrite it, all willy-nilly.");

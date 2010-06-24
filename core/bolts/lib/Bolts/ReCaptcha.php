@@ -1,15 +1,15 @@
 <?php
 
 /*
-	Class: Cts_ReCaptcha
+	Class: Bolts_ReCaptcha
 
 	About: Author
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 */
-class Cts_ReCaptcha {
+class Bolts_ReCaptcha {
 
 	/* Group: Instance Methods */
 
@@ -61,7 +61,7 @@ class Cts_ReCaptcha {
 			'response'   => $response,
 		);
 
-		$response = Cts_Url::get($url, $data);
+		$response = Bolts_Url::get($url, $data);
 
 		if ($response['http_code'] == 200) {
 			$rc_response = explode(chr(10), $response['output'], 2);

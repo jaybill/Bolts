@@ -3,7 +3,7 @@ name        = MODULE_NAME_UC
 version     = 0.1
 description = This module has been auto-generated.
 author      = Communitas Module Generator
-url         = http://communit.as
+url         = http://Bolts
 
 [lib_versions]
 zf     = 1.6.2

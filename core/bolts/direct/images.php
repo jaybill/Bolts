@@ -1,6 +1,6 @@
 <?php
 // Caclulate basepath
-$basepath =  substr($_SERVER['SCRIPT_FILENAME'], 0, strrpos( $_SERVER['SCRIPT_FILENAME'], "/modules/default/direct" ));
+$basepath =  substr($_SERVER['SCRIPT_FILENAME'], 0, strrpos( $_SERVER['SCRIPT_FILENAME'], "/modules/bolts/direct" ));
 // Get config files
 $registry_cache_file = $basepath."/etc/cached_config.ini";
 $registry_cache = parse_ini_file($registry_cache_file);
@@ -61,7 +61,7 @@ try{
 				$crop_start_x = 0;
 			}
 		}
-		set_include_path(get_include_path().PATH_SEPARATOR.$basepath."/modules/default/lib");
+		set_include_path(get_include_path().PATH_SEPARATOR.$basepath."/modules/bolts/lib");
 		set_include_path(get_include_path().PATH_SEPARATOR.$config['application']['asido_path']);
 		define('ASIDO_DIR', null);
 		@include('class.asido.php'); 

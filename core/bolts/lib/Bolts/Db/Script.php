@@ -1,10 +1,10 @@
 <?php
 
-class Cts_Db_Script {
+class Bolts_Db_Script {
 
 	public $errors = null;
 
-	function Cts_Db_Script($module = null, $scriptname = null, $dbAdapter = null) {
+	function Bolts_Db_Script($module = null, $scriptname = null, $dbAdapter = null) {
 
 		$this->errors = array();
 

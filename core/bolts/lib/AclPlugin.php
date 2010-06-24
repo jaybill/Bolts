@@ -1,19 +1,19 @@
 <?php
 /**
- * communit.as
+ * Bolts
  * @copyright (C)2008 Jaybill McCarthy, All Rights Reserved.
  * @category communitas
  * @package communitas
  * @author Jaybill McCarthy
- * @link http://communit.as communit.as
- * @license http://communit.as/docs/license License
+ * @link http://Bolts Bolts
+ * @license http://Bolts/docs/license License
  */
 
 /**
  *
  * @package communitas
  * @subpackage core_lib
- * @license http://communit.as/docs/license License 
+ * @license http://Bolts/docs/license License 
  */
  
 class AclPlugin extends Zend_Controller_Plugin_Abstract {
@@ -23,12 +23,12 @@ class AclPlugin extends Zend_Controller_Plugin_Abstract {
 		$auth = Zend_Auth :: getInstance();
 		$roles_table = new Roles();   
 		
-		$appNamespace = new Zend_Session_Namespace('Cts_Temp');
+		$appNamespace = new Zend_Session_Namespace('Bolts_Temp');
 
 		if (Zend_Registry :: isRegistered('acl')) {
 			$acl = Zend_Registry :: get('acl');
 		} else {
-			$acl = new Cts_Acl($auth);
+			$acl = new Bolts_Acl($auth);
 			Zend_Registry::set('acl', $acl);
 		}
 
@@ -59,13 +59,12 @@ class AclPlugin extends Zend_Controller_Plugin_Abstract {
 		$requested = $request->getModuleName() . "-" .
 		ucfirst(strtolower($request->getControllerName())) . "-" .
 		$request->getActionName();
-		//dd($requested);
 		$url = $frontController->getBaseUrl() . "/";
 
 
 		if(!$acl->has($requested)){
 			// this doesn't exist, throw to 404
-			$request->setModuleName('default');
+			$request->setModuleName('bolts');
 			$request->setControllerName('auth');
 			$request->setActionName('missing');
 		} else {
@@ -110,12 +109,12 @@ class AclPlugin extends Zend_Controller_Plugin_Abstract {
 						}
 					
 						// send on to the login scipt
-						$request->setModuleName('default');
+						$request->setModuleName('bolts');
 						$request->setControllerName('auth');
 						$request->setActionName('login');
 				
 					} else {
-						$admin = "default-Admin-index";
+						$admin = "bolts-Admin-index";
 						$isAdmin = array();
 						foreach($user_roles as $user_role){
 							if ($acl->isAllowed($user_role, $admin)){
@@ -125,11 +124,11 @@ class AclPlugin extends Zend_Controller_Plugin_Abstract {
 							}
 						}
 						if (!in_array(true,$isAdmin)) {
-							$request->setModuleName('default');				
+							$request->setModuleName('bolts');				
 							$request->setControllerName('auth');
 							$request->setActionName('denied');	
 						} else {
-							$request->setModuleName('default');				
+							$request->setModuleName('bolts');				
 							$request->setControllerName('admin');
 							$request->setActionName('index');	
 						}

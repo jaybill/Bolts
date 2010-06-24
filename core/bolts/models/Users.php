@@ -7,14 +7,14 @@
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	About: See Also
-		<Cts_Db_Table_Abstract>
+		<Bolts_Db_Table_Abstract>
 */
-class Users extends Cts_Db_Table_Abstract {
+class Users extends Bolts_Db_Table_Abstract {
 
-	protected $_name = 'default_users';
+	protected $_name = 'bolts_users';
 	protected $_primary = 'username';
 	protected $_logger;
 	public $_keyword_search_field_names = array("username", "full_name");
@@ -121,7 +121,7 @@ class Users extends Cts_Db_Table_Abstract {
 			where - A where clause string to limit the rows that get deleted. If the where clause is empty, all users will be deleted!
 
 		Plugin Hooks:
-			- *default_users_table_delete* (action) - TBD
+			- *bolts_users_table_delete* (action) - TBD
 			param username - The username of the user to delete.
 
 		Returns:
@@ -130,7 +130,7 @@ class Users extends Cts_Db_Table_Abstract {
 	public function delete($where) {
 		$users = $this->fetchAll($where);
 		foreach ($users as $user) {
-			$this->_cts_plugin->doAction('default_users_table_delete', array('username' => $user->username)); // ACTION HOOK
+			$this->_Bolts_plugin->doAction('bolts_users_table_delete', array('username' => $user->username)); // ACTION HOOK
 		}
 		return parent::delete($where);
 	}
@@ -190,11 +190,11 @@ class Users extends Cts_Db_Table_Abstract {
 			An array of users.
 	*/
 	function getByRoleId($role_id) {
-		// SELECT u.* from default_users u join default_users_roles r on u.username = r.username where r.role_id = 3;
+		// SELECT u.* from bolts_users u join bolts_users_roles r on u.username = r.username where r.role_id = 3;
 		$where = $this->getAdapter()->quoteInto('role_id = ?', $role_id);
 		$select = $this->getAdapter()->select();
 		$select->from(array("u" => $this->_name));
-		$select->join(array("r" => "default_users_roles"),"u.username = r.username",array());
+		$select->join(array("r" => "bolts_users_roles"),"u.username = r.username",array());
 		$select->where("r.role_id = ?",$role_id);
 		$db = $this->getAdapter();				
 		$out = $db->fetchAll($select);		
@@ -317,14 +317,14 @@ class Users extends Cts_Db_Table_Abstract {
 			include_filename (optional) - Whether or not to include the filename or just the directory. Defaults to false.
 
 		Plugin Hooks:
-			- *default_users_table_avatar_path* (filter) - Allows you to modify the default avatar path.
+			- *bolts_users_table_avatar_path* (filter) - Allows you to modify the default avatar path.
 			param path - the default path to the avatar.
 	*/
 	function getAvatarPath($username, $include_filename = false) {
-		$path = Cts_Registry::get('upload_path')."/".$username."/original";
+		$path = Bolts_Registry::get('upload_path')."/".$username."/original";
 		$params['path'] = $path;
-		$params['filename'] = Cts_Registry::get('avatar_filename');
-		$params = $this->_cts_plugin->doFilter("default_users_table_avatar_path", $params);
+		$params['filename'] = Bolts_Registry::get('avatar_filename');
+		$params = $this->_Bolts_plugin->doFilter("bolts_users_table_avatar_path", $params);
 		if ($include_filename) {
 			return $params['path']."/".$params['filename'];
 		} else {
@@ -340,9 +340,9 @@ class Users extends Cts_Db_Table_Abstract {
 			username - The username of the user whose cache is to be cleared.
 	*/
 	static function clearUserCache($username) {
-		$cache_path = Cts_Filesystem::getPath('usercache', $username);
+		$cache_path = Bolts_Filesystem::getPath('usercache', $username);
 		if (file_exists($cache_path)) {
-			Cts_Filesystem::SureRemoveDir($cache_path, false);
+			Bolts_Filesystem::SureRemoveDir($cache_path, false);
 		}
 	}
 

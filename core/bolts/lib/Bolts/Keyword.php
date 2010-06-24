@@ -1,15 +1,15 @@
 <?php
 
 /*
-	Class: Cts_Keyword
+	Class: Bolts_Keyword
 
 	About: Author
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 */
-class Cts_Keyword {
+class Bolts_Keyword {
 
 	/* Group: Instance Methods */
 
@@ -27,18 +27,18 @@ class Cts_Keyword {
 	*/
 	function extract($source) {
 		// TODO - should remove this default value
-		$cts_id = Cts_Registry::get('yahoo_api_cts_id');
+		$Bolts_id = Bolts_Registry::get('yahoo_api_Bolts_id');
 		$curl_handle = curl_init();
 		$keywords = null;
 		$all_keywords = null;
-		$filter = new Cts_FilterTags();
-		$noisewords = Cts_NoiseWords::getAll();
+		$filter = new Bolts_FilterTags();
+		$noisewords = Bolts_NoiseWords::getAll();
 		$url = "http://search.yahooapis.com/ContentAnalysisService/V1/termExtraction";
 		curl_setopt($curl_handle, CURLOPT_URL, $url);
 		curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 2);
 		curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($curl_handle, CURLOPT_POST, 1);
-		curl_setopt($curl_handle, CURLOPT_POSTFIELDS, "appid=".$cts_id."&output=php&context=".urlencode($source));
+		curl_setopt($curl_handle, CURLOPT_POSTFIELDS, "appid=".$Bolts_id."&output=php&context=".urlencode($source));
 		$buffer = curl_exec($curl_handle);
 		curl_close($curl_handle);
 		$results= unserialize($buffer);

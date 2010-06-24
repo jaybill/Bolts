@@ -1,15 +1,15 @@
 <?php
 
 /*
-	Class: Cts_Translate
+	Class: Bolts_Translate
 
 	About: Author
 		Rich Joslin
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 */
-class Cts_Translate {
+class Bolts_Translate {
 
 	/* Group: Static Methods */
 
@@ -25,18 +25,18 @@ class Cts_Translate {
 
 		$translation = $key;
 		if ($do_translation) {
-			if (Cts_Registry::get('enable_localization') == '1'
+			if (Bolts_Registry::get('enable_localization') == '1'
 			 && !is_null($module_name) && trim($module_name) != ""
 			 && !is_null($key) && trim($key) != "") {
-				$locale_code = Cts_Translate::cleanZendLocaleCode($locale_code);
-				$path_to_csv = Cts_Registry::get('basepath')."/modules/".$module_name."/languages/".$locale_code.".csv";
+				$locale_code = Bolts_Translate::cleanZendLocaleCode($locale_code);
+				$path_to_csv = Bolts_Registry::get('basepath')."/modules/".$module_name."/languages/".$locale_code.".csv";
 				if (file_exists($path_to_csv)) {
 					try {
 						$translate = new Zend_Translate("csv", $path_to_csv, $locale_code, array('delimiter' => ","));
 						$translation = $translate->_($key);
 						// this next bit will populate the locale file with untranslated terms
 						// so it's easier for someone to go through and translate them
-						if (Cts_Registry::get('auto_populate_language_files') == '1') {
+						if (Bolts_Registry::get('auto_populate_language_files') == '1') {
 							if (!$translate->isTranslated($key, true, $locale_code)) {
 								$key_no_quotes = str_replace('"', '&quot;', $key);
 								$str = '"'.$key_no_quotes.'","'.$key_no_quotes.'"'."\n";

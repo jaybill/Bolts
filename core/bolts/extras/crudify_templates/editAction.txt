@@ -1,6 +1,6 @@
 $errors = array();
 $TABLE_OBJECT_VAR = new TABLE_CLASSNAME();
-$request = new Cts_Request($this->getRequest());
+$request = new Bolts_Request($this->getRequest());
 $THE_ID = null;
 if ($request->has('THE_ID')) {
 	$THE_ID = $request->THE_ID;

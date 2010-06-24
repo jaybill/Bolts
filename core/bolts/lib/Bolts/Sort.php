@@ -1,15 +1,15 @@
 <?php
 
 /*
-	Class: Cts_Sort
+	Class: Bolts_Sort
 
 	About: Author
 		Rich Joslin
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 */
-class Cts_Sort {
+class Bolts_Sort {
 
 	/* Group: Static Methods */
 

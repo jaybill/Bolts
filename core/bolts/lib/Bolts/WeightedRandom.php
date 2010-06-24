@@ -1,6 +1,6 @@
 <?php
 
-class Cts_WeightedRandom{
+class Bolts_WeightedRandom{
 
 	/**
 	 * weighted_random()
@@ -14,11 +14,11 @@ class Cts_WeightedRandom{
 	 */
 	static function weighted_random($values, $weights, $lookup = null, $total_weight = null){
 		if ($lookup == null) {
-			list($lookup, $total_weight) = Cts_WeightedRandom::calc_lookups($values, $weights);
+			list($lookup, $total_weight) = Bolts_WeightedRandom::calc_lookups($values, $weights);
 		}
 	 
 		$r = mt_rand(0, $total_weight);
-		return $values[Cts_WeightedRandom::binary_search($r, $lookup)];
+		return $values[Bolts_WeightedRandom::binary_search($r, $lookup)];
 	}
 	 
 	/**

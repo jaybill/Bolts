@@ -7,13 +7,13 @@
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	About: See Also
-		<Cts_Controller_Action_Abstract>
+		<Bolts_Controller_Action_Abstract>
 
 */
-class AuthController extends Cts_Controller_Action_Abstract {
+class AuthController extends Bolts_Controller_Action_Abstract {
 
 	/* Group: Actions */
 
@@ -44,7 +44,7 @@ class AuthController extends Cts_Controller_Action_Abstract {
 
 	*/
 	function loginAction() {
-		$appNamespace = new Zend_Session_Namespace('Cts_Temp');
+		$appNamespace = new Zend_Session_Namespace('Bolts_Temp');
 
 		$frontcontroller = Zend_Controller_Front::getInstance();
 		$request = $frontcontroller->getRequest();
@@ -58,7 +58,7 @@ class AuthController extends Cts_Controller_Action_Abstract {
 		}
 
 		$params = array('request' => $this->getRequest());
-		$params = $this->_cts_plugin->doFilter($this->_mca.'_before', $params); // FILTER HOOK
+		$params = $this->_Bolts_plugin->doFilter($this->_mca.'_before', $params); // FILTER HOOK
 		foreach ($params as $key => $value) {
 			if ($key != 'request') {
 				$this->view->$key = $value;
@@ -69,7 +69,7 @@ class AuthController extends Cts_Controller_Action_Abstract {
 		if ($this->getRequest()->isPost() or $appNamespace->autoLogin) {
 			// collect the data from the user
 			$filter = new Zend_Filter_StripTags();
-			$appNamespace = new Zend_Session_Namespace('Cts_Temp');
+			$appNamespace = new Zend_Session_Namespace('Bolts_Temp');
 		   if ($appNamespace->autoLogin) {
 				$autologin = true;
 				$username = $appNamespace->autoLoginUsername;
@@ -88,7 +88,7 @@ class AuthController extends Cts_Controller_Action_Abstract {
 
 			$dbAdapter = Zend_Db_Table::getDefaultAdapter();
 			$authAdapter = new Zend_Auth_Adapter_DbTable($dbAdapter);
-			$authAdapter->setTableName('default_users');
+			$authAdapter->setTableName('bolts_users');
 			$authAdapter->setIdentityColumn('username');
 			$authAdapter->setCredentialColumn('password');
 
@@ -127,8 +127,8 @@ class AuthController extends Cts_Controller_Action_Abstract {
 						$params['requested_url'] = null;
 					}
 
-					$this->_cts_plugin->doAction($this->_mca.'_success', $params); // ACTION HOOK
-					$this->_cts_plugin->doAction($this->_mca.'_login_success', $params); // ACTION HOOK (deprecated)
+					$this->_Bolts_plugin->doAction($this->_mca.'_success', $params); // ACTION HOOK
+					$this->_Bolts_plugin->doAction($this->_mca.'_login_success', $params); // ACTION HOOK (deprecated)
 					
 					if ($this->_request->isXmlHttpRequest()) {
 						$user = $users_table->fetchByUsername($username)->toArray();
@@ -142,16 +142,16 @@ class AuthController extends Cts_Controller_Action_Abstract {
 					} else {
 						// get the last viewed page, or default to the logged in user's profile page
 						// TODO - fix view states
-						// $this->_redirect(Cts_Common::getViewState($this->session, 'last_visited', "/profile/" . $username));
-						$this->_redirect("/default/auth/loginredirect");
+						// $this->_redirect(Bolts_Common::getViewState($this->session, 'last_visited', "/profile/" . $username));
+						$this->_redirect("/bolts/auth/loginredirect");
 					}
 				} else {
 					// failure: clear database row from session
 					$appNamespace->last_login = null;
 					$this->view->errors = array($this->_T('Login failed.'));
 					$params = array('username' => $username);
-					$this->_cts_plugin->doAction($this->_mca.'_failure', $params); // ACTION HOOK
-					$this->_cts_plugin->doAction($this->_mca.'_login_failure', $params); // ACTION HOOK (deprecated)
+					$this->_Bolts_plugin->doAction($this->_mca.'_failure', $params); // ACTION HOOK
+					$this->_Bolts_plugin->doAction($this->_mca.'_login_failure', $params); // ACTION HOOK (deprecated)
 				}
 			} catch (Exception $e) {
 				$appNamespace->last_login = null;
@@ -181,9 +181,9 @@ class AuthController extends Cts_Controller_Action_Abstract {
 	*/
 	function loginredirectAction() {
 		if ($this->_identity->isAdmin) {
-			$this->_redirect(Cts_Registry::get('login_redirect_admins'));
+			$this->_redirect(Bolts_Registry::get('login_redirect_admins'));
 		} else {
-			$this->_redirect(Cts_Registry::get('login_redirect_non_admins'));
+			$this->_redirect(Bolts_Registry::get('login_redirect_non_admins'));
 		}
 	}
 
@@ -201,7 +201,7 @@ class AuthController extends Cts_Controller_Action_Abstract {
 		if ($this->_auth->hasIdentity()) {
 			$params['username'] = $this->_identity->username;
 		}
-		$this->_cts_plugin->doAction($this->_mca, $params); // ACTION HOOK
+		$this->_Bolts_plugin->doAction($this->_mca, $params); // ACTION HOOK
 	}
 
 	/*
@@ -216,7 +216,7 @@ class AuthController extends Cts_Controller_Action_Abstract {
 	function missingAction() {
 		header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found"); 
 		$params = array();
-		$params['request'] = new Cts_Request($this->getRequest());
+		$params['request'] = new Bolts_Request($this->getRequest());
 		$params['username'] = null;
 		if ($this->_auth->hasIdentity()) {
 			$users_table = new Users();
@@ -227,8 +227,8 @@ class AuthController extends Cts_Controller_Action_Abstract {
 			}
 		}
 		
-		$params = $this->_cts_plugin->doFilter($this->_mca, $params); // FILTER HOOK
-		$this->_cts_plugin->doAction($this->_mca, $params); // ACTION HOOK
+		$params = $this->_Bolts_plugin->doFilter($this->_mca, $params); // FILTER HOOK
+		$this->_Bolts_plugin->doAction($this->_mca, $params); // ACTION HOOK
 		
 		unset($params['request'], $params['username']);
 		foreach ($params as $key => $value) {
@@ -247,16 +247,16 @@ class AuthController extends Cts_Controller_Action_Abstract {
 				param username - The username of the logged-in user. Only exists if there is a logged-in user.
 	*/
 	function logoutAction() {
-		$appNamespace = new Zend_Session_Namespace('Cts_Temp');
+		$appNamespace = new Zend_Session_Namespace('Bolts_Temp');
 		$appNamespace->requestedUrl = null;
 		$params = array();
 		$params['username'] = null;
 		if ($this->_auth->hasIdentity()) {
 			$params['username'] = $this->_identity->username;
 		}
-		$this->_cts_plugin->doAction($this->_mca . '_pre', $params); // ACTION HOOK
+		$this->_Bolts_plugin->doAction($this->_mca . '_pre', $params); // ACTION HOOK
 		Zend_Auth::getInstance()->clearIdentity();
-		$this->_cts_plugin->doAction($this->_mca . '_post', $params); // ACTION HOOK
+		$this->_Bolts_plugin->doAction($this->_mca . '_post', $params); // ACTION HOOK
 		$this->_redirect('/');
 	}
 
@@ -267,7 +267,7 @@ class AuthController extends Cts_Controller_Action_Abstract {
 			- *auth_error* (action) - Allows you to perform an action any time an error occurs.
 	*/
 	function errorAction() {
-		$this->_cts_plugin->doAction($this->_mca, array()); // ACTION HOOK
+		$this->_Bolts_plugin->doAction($this->_mca, array()); // ACTION HOOK
 	}
 
 }

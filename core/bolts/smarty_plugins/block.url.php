@@ -1,16 +1,16 @@
 <?php
 /*
 	Title: smarty_block_url
-		Makes predetermined modifications to a URL using the Cts_Common::urlFilter method.
+		Makes predetermined modifications to a URL using the Bolts_Common::urlFilter method.
 
 	About: Author
 		Rich Joslin
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	Function: smarty_block_url
-		Makes predetermined modifications to a URL using the Cts_Common::urlFilter method.
+		Makes predetermined modifications to a URL using the Bolts_Common::urlFilter method.
 
 	Arguments:
 		$params - An array of variables. (TBD)
@@ -33,7 +33,7 @@
 		(end example)
 
 	About: See Also
-		- <Cts_Common/urlFilter>
+		- <Bolts_Common/urlFilter>
 */
 function smarty_block_url($params, $content, $smarty, $repeat) {
 	$tpl_vars = $smarty->_tpl_vars;
@@ -45,10 +45,10 @@ function smarty_block_url($params, $content, $smarty, $repeat) {
 			$request_locale = $tpl_vars['request_locale'];
 			if($request_locale && $locale_code != $request_locale) {
 				$urlparams['locale_code'] = strtolower($request_locale);
-			} elseif (!is_null($locale_code) && Cts_Translate::validateLocaleCode($locale_code)) {
+			} elseif (!is_null($locale_code) && Bolts_Translate::validateLocaleCode($locale_code)) {
 				$urlparams['locale_code'] = strtolower($locale_code);
 			}
-			$url_filter = new Cts_Url_Filter();
+			$url_filter = new Bolts_Url_Filter();
 			return $url_filter->filter($content, $urlparams);
 		}
 	}

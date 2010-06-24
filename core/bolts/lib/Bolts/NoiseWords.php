@@ -1,15 +1,15 @@
 <?php
 
 /*
-	Class: Cts_NoiseWords
+	Class: Bolts_NoiseWords
 
 	About: Author
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 */
-class Cts_NoiseWords {
+class Bolts_NoiseWords {
 
 	/* Group: Static Methods */
 

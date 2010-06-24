@@ -7,12 +7,12 @@
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	About: See Also
-		<Cts_Controller_Action_Abstract>
+		<Bolts_Controller_Action_Abstract>
 */
-class RoleController extends Cts_Controller_Action_Admin {
+class RoleController extends Bolts_Controller_Action_Admin {
 
 	/* Group: Instance Methods */
 
@@ -61,7 +61,7 @@ class RoleController extends Cts_Controller_Action_Admin {
 	*/
     function editAction() {
     	
-		$request = new Cts_Request($this->getRequest());
+		$request = new Bolts_Request($this->getRequest());
 		$roles_table = new Roles();
 		$role = null;
 		
@@ -72,7 +72,7 @@ class RoleController extends Cts_Controller_Action_Admin {
 				if(!is_null($role)){
 					// we do not edit the guest role
 					if($role->shortname == "guest"){
-						$this->_redirect("/default/role");
+						$this->_redirect("/bolts/role");
 					}
 				
 					$this->view->role 			= $role->toArray();
@@ -105,7 +105,7 @@ class RoleController extends Cts_Controller_Action_Admin {
 		    
             if ($request->has('shortname')) {
               $shortname = $request->shortname;
-              if (!Cts_Validate::checkLength($request->shortname, 1, 255)) {
+              if (!Bolts_Validate::checkLength($request->shortname, 1, 255)) {
                 $errors[] = $this->_T("Shortname must be between 1 and 255 chars.");
               }
             } else {
@@ -134,7 +134,7 @@ class RoleController extends Cts_Controller_Action_Admin {
 				foreach($inherit_ids as $in_id){					
 					$roles_table->setInheritedRole($id,$in_id);
 				}				
-				$this->_redirect("/default/role");				
+				$this->_redirect("/bolts/role");				
 			} else {
 			  $this->view->errors = $errors;
 			}
@@ -176,17 +176,17 @@ class RoleController extends Cts_Controller_Action_Admin {
 			errors - array of error messages, if any			
 	*/
 	function deleteAction(){
-		$request = new Cts_Request($this->getRequest());
+		$request = new Bolts_Request($this->getRequest());
 		$roles_table = new Roles();
 		
 		if($request->has('id')){
 		  $id = $request->id;
 		  $role = $roles_table->fetchRow("id = ".$id);
 		  if(is_null($role)){
-		    $this->_redirect('/default/role');
+		    $this->_redirect('/bolts/role');
 		  }
 		} else {
-		  $this->_redirect('/default/role');
+		  $this->_redirect('/bolts/role');
 		}
         
 		if ($this->getRequest()->isPost() and $request->has("delete")) {
@@ -243,7 +243,7 @@ class RoleController extends Cts_Controller_Action_Admin {
 					$this->view->success = $this->_T("Role deleted.");
 				}
 			} else {
-				$this->_redirect("/default/role");
+				$this->_redirect("/bolts/role");
 			}
 		}
 		$this->view->role = $role->toArray();

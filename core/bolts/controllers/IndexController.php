@@ -7,13 +7,13 @@
 	Jaybill McCarthy
 
 	About: License
-	<http://communit.as/docs/license>
+	<http://Bolts/docs/license>
 	
 	About: See Also
-		<Cts_Controller_Action_Abstract>
+		<Bolts_Controller_Action_Abstract>
 		
 */
-class IndexController extends Cts_Controller_Action_Abstract {
+class IndexController extends Bolts_Controller_Action_Abstract {
 
 	/* Group: Instance Methods */
 
@@ -54,7 +54,7 @@ class IndexController extends Cts_Controller_Action_Abstract {
 		} else {
 			$params['is_admin'] = false;
 		}
-	    $additional = $this->_cts_plugin->doFilter($this->_mca, $params); // FILTER HOOK
+	    $additional = $this->_Bolts_plugin->doFilter($this->_mca, $params); // FILTER HOOK
 	    foreach($additional as $key => $value) {
 	    	$this->view->$key = $value;
 	    }
@@ -68,7 +68,7 @@ class IndexController extends Cts_Controller_Action_Abstract {
 		// if localization is enabled and the URI does not contain a locale code
 		// and there is not a valid locale cookie
 		// redirect to a URI that contains the default locale code
-		if (Cts_Registry::get('enable_localization') == '1') {
+		if (Bolts_Registry::get('enable_localization') == '1') {
 			$locales_table = new Locales();
 			$locale_codes = $locales_table->getLocaleCodes(true);
 			$uri_parts = explode("/", trim($this->_uri, "/"));

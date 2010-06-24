@@ -1,27 +1,27 @@
 <?php
 
 /*
-	Class: Cts_Email
+	Class: Bolts_Email
 
 	About: Author
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 */
-class Cts_Email {
+class Bolts_Email {
 
 	/* Group: Constructors */
 
 	/*
-		Constructor: Cts_Email
+		Constructor: Bolts_Email
 			Sets a template path variable (_template_path), and instantiates a logger.
 
 		Arguments:
 			template_path - An optional string to override the default template path.
 	*/
-	function Cts_Email($template_path = null, $module = "default") {
-		$this->_smarty = new Cts_View_Smarty();
+	function Bolts_Email($template_path = null, $module = "default") {
+		$this->_smarty = new Bolts_View_Smarty();
 		$smarty_config = Zend_Registry::get('smarty_config');
 		foreach ($smarty_config as $key => $value) {
 			if ($key != "plugins_dir") {
@@ -66,26 +66,26 @@ class Cts_Email {
 		Returns: void
 	*/
 	function sendEmail($subject, $to_address, $template, $params = null, $to_name = null, $isHtml = false) {
-		$useAuth = Cts_Registry::get('smtp_use_auth');
+		$useAuth = Bolts_Registry::get('smtp_use_auth');
 
 		if (array_key_exists('from_email', $params)) {
 			$site_from_email = $params['from_email'];
 		} else {
-			$site_from_email = Cts_Registry::get('site_from_email');
+			$site_from_email = Bolts_Registry::get('site_from_email');
 		}
 
 		// TODO - shouldn't this be from_name instead of from_email ?
 		if (array_key_exists('from_name', $params)) {
 			$site_from = $params['from_name'];
 		} else {
-			$site_from = Cts_Registry::get('site_from');
+			$site_from = Bolts_Registry::get('site_from');
 		}
 
-		$smtp = Cts_Registry::get('smtp_server');
-		$username = Cts_Registry::get('smtp_username');
-		$password = Cts_Registry::get('smtp_password');
-		$ssl = Cts_Registry::get('smtp_ssl_type');  //tls
-		$smtp_port = Cts_Registry::get('smtp_port');
+		$smtp = Bolts_Registry::get('smtp_server');
+		$username = Bolts_Registry::get('smtp_username');
+		$password = Bolts_Registry::get('smtp_password');
+		$ssl = Bolts_Registry::get('smtp_ssl_type');  //tls
+		$smtp_port = Bolts_Registry::get('smtp_port');
 
 		$config = array();
 		if ($useAuth == 1) {
@@ -118,7 +118,7 @@ class Cts_Email {
 				$mail->addTo($to_address);
 			}
 			$mail->setSubject($subject);
-			$mail->setReturnPath(Cts_Registry::get('site_from_email'));
+			$mail->setReturnPath(Bolts_Registry::get('site_from_email'));
 			$id_part = substr($site_from_email, strpos('@', $site_from_email));
 			$message_id = md5(uniqid()).$id_part;
 			//$mail->addHeader('Message-Id', $message_id);
@@ -126,7 +126,7 @@ class Cts_Email {
 			$mail->send();
 
 		} catch (Exception $e) {
-			Cts_Log::report('email: could not send', $e, Zend_Log::ERR);
+			Bolts_Log::report('email: could not send', $e, Zend_Log::ERR);
 		}
 	}
 

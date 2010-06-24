@@ -7,12 +7,12 @@
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	About: See Also
-		<Cts_Controller_Action_Abstract>
+		<Bolts_Controller_Action_Abstract>
 */
-class UserController extends Cts_Controller_Action_Abstract {
+class UserController extends Bolts_Controller_Action_Abstract {
 
 	/* Group: Instance Methods */
 
@@ -31,8 +31,8 @@ class UserController extends Cts_Controller_Action_Abstract {
 	*/
 	function init() {
 		parent::init();
-		$this->view->full_name_length = Cts_Registry::get('full_name_length');
-		$this->view->username_length = Cts_Registry::get('username_length');
+		$this->view->full_name_length = Bolts_Registry::get('full_name_length');
+		$this->view->username_length = Bolts_Registry::get('username_length');
 		$this->_users_table = new Users();
 		if ($this->_auth->hasIdentity()) {
 			$default = $this->_identity->username;
@@ -62,7 +62,7 @@ class UserController extends Cts_Controller_Action_Abstract {
 	function loginbounceAction() {
 		$username = $this->_request->getParam('username');
 		$backto = $this->_request->getParam('backto');
-		$this->_redirect('/default/user/' . $backto . '/username/' . $username);
+		$this->_redirect('/bolts/user/' . $backto . '/username/' . $username);
 	}
 
 	/*
@@ -93,14 +93,14 @@ class UserController extends Cts_Controller_Action_Abstract {
 			$del = strtolower($this->_request->getPost('delete'));
 			if($del == 'yes' && !is_null($username)){
 				$params = array('username' => $username, 'delete_row' => true);
-				$params = $this->_cts_plugin->doFilter($this->_mca . "_pre_delete", $params); // FILTER HOOK
+				$params = $this->_Bolts_plugin->doFilter($this->_mca . "_pre_delete", $params); // FILTER HOOK
 				if($params['delete_row']){
 					$where = $users_table->getAdapter()->quoteInto('username = ?', $username);
 					$users_table->delete($where);
 				}
-				$this->_cts_plugin->doAction($this->_mca . "_post_delete", $params); // ACTION HOOK
+				$this->_Bolts_plugin->doAction($this->_mca . "_post_delete", $params); // ACTION HOOK
 			}
-			$this->_redirect('/default/auth/logout');
+			$this->_redirect('/bolts/auth/logout');
 		}else{
 			if(!is_null($username)){
 				$user = $users_table->fetchByUsername($username);
@@ -143,11 +143,11 @@ class UserController extends Cts_Controller_Action_Abstract {
 			pagetitle - The HTML page title.
 			params - All params in the param arrays for filters get turned into view variables automatically.
 			regions - An array of regions, typically consisting of continents (currently hardcoded).
-			signs - An array of astrological star signs generated with Cts_Common::GetSignArray.
+			signs - An array of astrological star signs generated with Bolts_Common::GetSignArray.
 			users - An array of users to display as a list of links.
 	*/
 	function indexAction() {
-		$request = new Cts_Request($this->getRequest());
+		$request = new Bolts_Request($this->getRequest());
 		$users_table = new UsersIndex();
 
 		$searchterm = "";
@@ -155,14 +155,14 @@ class UserController extends Cts_Controller_Action_Abstract {
 		if ($request->has('searchterm') && trim($request->searchterm) != "") {
 			$searchterm = $request->searchterm;
 			if ($this->_request->isPost()) {
-				$this->_redirect("/default/useradmin/index/searchterm/".urlencode($searchterm)."/");
+				$this->_redirect("/bolts/useradmin/index/searchterm/".urlencode($searchterm)."/");
 			}
 			$whereclause = $users_table->getWhereClauseForKeywords($searchterm);
 		}
 		$this->view->searchterm = $searchterm;
 
 		$params = array('request' => $request, 'whereclause' => $whereclause);
-		$params = $this->_cts_plugin->doFilter($this->_mca . "_pre_select", $params); // FILTER HOOK
+		$params = $this->_Bolts_plugin->doFilter($this->_mca . "_pre_select", $params); // FILTER HOOK
 		$whereclause = $params['whereclause'];
 
 		$params = array();
@@ -181,7 +181,7 @@ class UserController extends Cts_Controller_Action_Abstract {
 		// 	"whereclauses" => array(),
 		// 	"params" => $params,
 		// );
-		// $search_filter_results = $this->_cts_plugin->doFilter($this->_mca."_search", $search_filter_params); // FILTER HOOK
+		// $search_filter_results = $this->_Bolts_plugin->doFilter($this->_mca."_search", $search_filter_params); // FILTER HOOK
 		// $whereclauses = $search_filter_results['whereclauses'];
 		// foreach ($whereclauses as $whereclause) {
 		// 	$select->where($whereclause);
@@ -243,22 +243,22 @@ class UserController extends Cts_Controller_Action_Abstract {
 
 		$this->view->params = $params;
 
-		$per_page = Cts_Registry::get('users_per_page');
+		$per_page = Bolts_Registry::get('users_per_page');
 		$page = $this->_request->getParam('page', 0);
 		$total = $users_table->getCountByWhereClause($whereclause);
-		$url = "/default/user/index";
+		$url = "/bolts/user/index";
 
 		$this->makePager($page, $per_page, $total, $url, $params);
 
 		$users = $users_table->fetchAllArray($whereclause, $order, $per_page, $per_page * $page);
 		$params = array('users' => $users);
-		$params = $this->_cts_plugin->doFilter($this->_mca . "_users", $params); // FILTER HOOK
+		$params = $this->_Bolts_plugin->doFilter($this->_mca . "_users", $params); // FILTER HOOK
 		$users = $params['users'];
 
 		$tmp_users = array();
 		if (count($users) > 0) {
 			foreach ($users as $user) {
-				$user['sign'] = Cts_Common::calculateAstroSign(strtotime($user['birthday']));
+				$user['sign'] = Bolts_Common::calculateAstroSign(strtotime($user['birthday']));
 				$countries_table = new Countries();
 				$where = $countries_table->getAdapter()->quoteInto('country_code = ?', $user['country_code']);
 				$country = $countries_table->fetchRow($where);
@@ -299,16 +299,16 @@ class UserController extends Cts_Controller_Action_Abstract {
 			- <_checkConfirmationUrl>
 	*/
 	function resetpasswordAction() {
-		$request = new Cts_Request($this->getRequest());
+		$request = new Bolts_Request($this->getRequest());
 		if ($this->_auth->hasIdentity()) {
-			$this->_redirect('/default/user/edit');
+			$this->_redirect('/bolts/user/edit');
 		}
 		$code = $this->_request->getParam('code', null);
  		$email = $this->_request->getParam('email', null);
 		if (!$this->_checkConfirmationUrl($email, $code)) {
 			$this->_forward('default', 'auth', 'missing'); return;
 		}
-		$field_name = Cts_Registry::get('password_reset_field_name');
+		$field_name = Bolts_Registry::get('password_reset_field_name');
 		$this->view->field_name = $field_name;
 		$this->view->code = $code;
 		$this->view->email = $email;
@@ -322,7 +322,7 @@ class UserController extends Cts_Controller_Action_Abstract {
 			$password_validator->addValidator(new Zend_Validate_StringLength(6, 32));
 			// make sure password is at least six chars
 			if (!$password_validator->isValid($password)){
-				$errors[] = $this->_T("Password must be between %d and %d characters",array(6, Cts_Registry::get('password_length')));
+				$errors[] = $this->_T("Password must be between %d and %d characters",array(6, Bolts_Registry::get('password_length')));
 			}
 			if ($password != $confirm) {
 				$errors[] = $this->_T("Passwords don't match");
@@ -339,7 +339,7 @@ class UserController extends Cts_Controller_Action_Abstract {
 					'password' => $password,
 					'errors' => $errors,
 				);
-				$additional = $this->_cts_plugin->doFilter($this->_mca, $params); // FILTER HOOK
+				$additional = $this->_Bolts_plugin->doFilter($this->_mca, $params); // FILTER HOOK
 				$errors = $additional['errors'];
 				$user = $additional['user'];
 
@@ -356,11 +356,11 @@ class UserController extends Cts_Controller_Action_Abstract {
 					'autologin_password' => $password,
 					'autologin_password_hash' => md5($password),
 				);
-				$params = $this->_cts_plugin->doFilter("default_user_resetpassword_done", $params); // FILTER HOOK
+				$params = $this->_Bolts_plugin->doFilter("default_user_resetpassword_done", $params); // FILTER HOOK
 
 				// SET UP AUTO-LOGIN, OR DON'T
 				if ($params['autologin']) {
-					$appNamespace = new Zend_Session_Namespace('Cts_Temp');
+					$appNamespace = new Zend_Session_Namespace('Bolts_Temp');
 					$appNamespace->autoLogin = $params['autologin'];
 					$appNamespace->autoLoginUsername = $params['autologin_username'];
 					$appNamespace->autoLoginPassword = $params['autologin_password'];
@@ -368,7 +368,7 @@ class UserController extends Cts_Controller_Action_Abstract {
 				}
 
 				// SEND THE USER ON THEIR WAY
-				$this->_redirect('/default/user/postregister');
+				$this->_redirect('/bolts/user/postregister');
 
 			} else {
 				$this->view->errors = $errors;
@@ -401,7 +401,7 @@ class UserController extends Cts_Controller_Action_Abstract {
 	*/
 	function forgotpasswordAction() {
 		if ($this->_auth->hasIdentity()) {
-			$this->_redirect('/default/user/profile/username/'.$this->_identity->username);
+			$this->_redirect('/bolts/user/profile/username/'.$this->_identity->username);
 		}
 		$this->view->pagetitle = "Forgot Password";
 		if ($this->_request->isPost()) {
@@ -424,9 +424,9 @@ class UserController extends Cts_Controller_Action_Abstract {
 				$this->view->success = $this->_T("Password reset email sent. Please check your email.");
 				// prepare notification email
 				$subject = $this->_T("Password Reset Link");
-				$from = trim(Cts_Registry::get('site_from'));
+				$from = trim(Bolts_Registry::get('site_from'));
 				$from = $this->_T($from);
-				$from_email = trim(Cts_Registry::get('site_from_email'));
+				$from_email = trim(Bolts_Registry::get('site_from_email'));
 				$from_email = $this->_T($from_email);
 				$email_params = array(
 					"url" => $this->_getConfirmationUrl($test_user->email),
@@ -434,7 +434,7 @@ class UserController extends Cts_Controller_Action_Abstract {
 					"from_email" => $from_email,
 					"locale_code" => $this->locale_code
 				);
-				$email = new Cts_Email();
+				$email = new Bolts_Email();
 				$email->sendEmail($subject, $test_user->email, "password.tpl", $email_params);
 			} else {
 				$this->view->errors = $errors;
@@ -461,10 +461,10 @@ class UserController extends Cts_Controller_Action_Abstract {
 				param session - The session object for the currently authenticated user session.
 	*/
 	function postregisterAction() {
-		$request = new Cts_Request($this->getRequest());
-		$redirect_url = Cts_Registry::get('default_postregister_redirect');
+		$request = new Bolts_Request($this->getRequest());
+		$redirect_url = Bolts_Registry::get('default_postregister_redirect');
 		$params = array('redirect_url' => $redirect_url, 'session' => $this->session);
-		$params = $this->_cts_plugin->doFilter($this->_mca.'_redirect', $params); // FILTER HOOK
+		$params = $this->_Bolts_plugin->doFilter($this->_mca.'_redirect', $params); // FILTER HOOK
 		if ($request->has('url')) {
 			// request param trumps all
 			$this->_redirect(base64_decode($request->url));
@@ -477,7 +477,7 @@ class UserController extends Cts_Controller_Action_Abstract {
 		Function: profile
 			Displays the public profile of a user.
 			Uses the _user local variable set up in <init>.
-			If the username is invalid, the browser is redirected to '/default/auth/missing' (currently hardcoded).
+			If the username is invalid, the browser is redirected to '/bolts/auth/missing' (currently hardcoded).
 
 		Plugin Hooks:
 			- *default_user_profile* (filter) - Allows you to affect the user object before displaying it. This is usually used for adding attributes to a user.
@@ -503,7 +503,7 @@ class UserController extends Cts_Controller_Action_Abstract {
 				$tmp_user['location'] = $country->country;
 			}
  			$params = array('user' => $tmp_user, 'request' => $this->getRequest());
-			$params = $this->_cts_plugin->doFilter($this->_mca, $params); // FILTER HOOK
+			$params = $this->_Bolts_plugin->doFilter($this->_mca, $params); // FILTER HOOK
 			foreach ($params as $key => $value) {
 				$this->view->$key = $value;
 			}
@@ -543,10 +543,10 @@ class UserController extends Cts_Controller_Action_Abstract {
 			$user - A user object for a successfully registered user.
 	*/
 	function registerAction() {
-		$request = new Cts_Request($this->getRequest());
+		$request = new Bolts_Request($this->getRequest());
 
 		if ($this->_auth->hasIdentity()) {
-			$this->_redirect('/default/user/profile/username/' . $this->_identity->username);
+			$this->_redirect('/bolts/user/profile/username/' . $this->_identity->username);
 		}
 		$users_table = new Users();
 		$user = array();
@@ -560,7 +560,7 @@ class UserController extends Cts_Controller_Action_Abstract {
 			$pre_register_params['return_url'] = false;
 		}
 		
-		$pre_register_params = $this->_cts_plugin->doFilter('default_pre_register', $pre_register_params); // FILTER HOOK
+		$pre_register_params = $this->_Bolts_plugin->doFilter('default_pre_register', $pre_register_params); // FILTER HOOK
 		foreach ($pre_register_params as $key=>$value) {
 			if( $key=='return_url' ){
 				$this->view->url_param = $value;
@@ -592,7 +592,7 @@ class UserController extends Cts_Controller_Action_Abstract {
 
 			// validate username
 			$username_validator = new Zend_Validate();
-			$username_validator->addValidator(new Zend_Validate_StringLength(1, Cts_Registry::get('username_length')));
+			$username_validator->addValidator(new Zend_Validate_StringLength(1, Bolts_Registry::get('username_length')));
 			$username_validator->addValidator(new Zend_Validate_Alnum());
 
 			if (!$username_validator->isValid($user['username'])) {
@@ -600,7 +600,7 @@ class UserController extends Cts_Controller_Action_Abstract {
 				if(trim($user['username']) == ""){
 					$show_username = "[".$this->_T("empty")."]";
 				}
-				$errors[] = $this->_T("%s isn't a valid username. (Between %d and %d characters, only letters and numbers)",array($show_username,1,Cts_Registry::get('username_length')));
+				$errors[] = $this->_T("%s isn't a valid username. (Between %d and %d characters, only letters and numbers)",array($show_username,1,Bolts_Registry::get('username_length')));
 			}
 
 			$user_where = $users_table->getAdapter()->quoteInto('username = ?', $user['username']);
@@ -628,7 +628,7 @@ class UserController extends Cts_Controller_Action_Abstract {
 			$password_validator->addValidator(new Zend_Validate_StringLength(6, 32));
 			// make sure password is at least six chars
 			if (!$password_validator->isValid($user['password'])){
-				$errors[] = $this->_T("Password must be between %d and %d characters",array(6, Cts_Registry::get('password_length')));
+				$errors[] = $this->_T("Password must be between %d and %d characters",array(6, Bolts_Registry::get('password_length')));
 			}
 			// if password is set, make sure it matches confirm
 			if($user['password'] != $user['confirm']){
@@ -636,7 +636,7 @@ class UserController extends Cts_Controller_Action_Abstract {
 			}
 
 			// do we meet the minimum age?
-			$minimum_age = Cts_Registry::get('minimum_registration_age', '13') ;
+			$minimum_age = Bolts_Registry::get('minimum_registration_age', '13') ;
 			$years_ago = strtotime($minimum_age . ' years ago');
 			if($user['birthday'] > $years_ago){
 				$errors[] = $this->_T("You must be at least %d years old to register.", $minimum_age);
@@ -648,7 +648,7 @@ class UserController extends Cts_Controller_Action_Abstract {
 				'errors' => $errors,
 			);
 
-			$additional = $this->_cts_plugin->doFilter($this->_mca, $params); // FILTER HOOK
+			$additional = $this->_Bolts_plugin->doFilter($this->_mca, $params); // FILTER HOOK
 
 			$errors = $additional['errors'];
 			$user = $additional['user'];
@@ -659,7 +659,7 @@ class UserController extends Cts_Controller_Action_Abstract {
 
 				$roles_table = new Roles();
 				$users_roles_table = new UsersRoles();
-				$default_role_shortname = Cts_Registry::get('default_role_shortname');
+				$default_role_shortname = Bolts_Registry::get('default_role_shortname');
 				$role_data = array("username" => $user['username'], "role_id" => $roles_table->getIdByShortname($default_role_shortname));
 				$users_roles_table->insert($role_data);
 				
@@ -691,12 +691,12 @@ class UserController extends Cts_Controller_Action_Abstract {
 					'autologin_password_hash' => md5($user['password']),
 					'locale_code' => $this->locale_code,
 				);
-				$params = $this->_cts_plugin->doFilter("default_post_register", $params); // FILTER HOOK
-				$this->_cts_plugin->doAction($this->_mca . "_post_register", $params); // ACTION HOOK (deprecated)
+				$params = $this->_Bolts_plugin->doFilter("default_post_register", $params); // FILTER HOOK
+				$this->_Bolts_plugin->doAction($this->_mca . "_post_register", $params); // ACTION HOOK (deprecated)
 
 				// SET UP AUTO-LOGIN, OR DON'T
 				if ($params['autologin']) {
-					$appNamespace = new Zend_Session_Namespace('Cts_Temp');
+					$appNamespace = new Zend_Session_Namespace('Bolts_Temp');
 					$appNamespace->autoLogin = $params['autologin'];
 					$appNamespace->autoLoginUsername = $params['autologin_username'];
 					$appNamespace->autoLoginPassword = $params['autologin_password'];
@@ -704,7 +704,7 @@ class UserController extends Cts_Controller_Action_Abstract {
 				}
 
 				// SEND THE USER ON THEIR WAY
-				$url = '/default/user/postregister';
+				$url = '/bolts/user/postregister';
 				// if there was a URL passed in then add that encoded URL as a param to the default redirect
 				if ($request->has('url')) {
 					$url .= '/url/'.$request->url;
@@ -726,7 +726,7 @@ class UserController extends Cts_Controller_Action_Abstract {
 			Either displays an edit form to edit a given user, or processes the edit form,
 			depending on whether or not the Request is a GET or POST.
 			If the username passed in does not match the currently authenticated user,
-			the browser is redirected to '/default/auth/missing' (currently hardcoded).
+			the browser is redirected to '/bolts/auth/missing' (currently hardcoded).
 
 		Plugin Hooks:
 			- *default_user_edit_pre_render* (filter) - For a GET Request, this enables you to affect the user object before the initial form is displayed.
@@ -756,7 +756,7 @@ class UserController extends Cts_Controller_Action_Abstract {
 
 			$user = $this->_user->toArray();
 			$params = array('user' => $user, 'request' => $this->_request, 'session' => $this->session);
-			$pre_render = $this->_cts_plugin->doFilter($this->_mca . "_pre_render", $params); // FILTER HOOK
+			$pre_render = $this->_Bolts_plugin->doFilter($this->_mca . "_pre_render", $params); // FILTER HOOK
 			$user = $pre_render['user'];
 
 			foreach ($pre_render as $key => $value) {
@@ -768,7 +768,7 @@ class UserController extends Cts_Controller_Action_Abstract {
 			//$tags = unserialize($user->tags);
 			if ($this->getRequest()->isPost()) {
 				$errors = array();
-				$request = new Cts_Request($this->getRequest());
+				$request = new Bolts_Request($this->getRequest());
 				$request->stripTags(array('email', 'newpassword', 'confirm', 'aboutme'));
 				$user['username'] = $this->_identity->username;
 				$user['email'] = $request->email;
@@ -776,13 +776,13 @@ class UserController extends Cts_Controller_Action_Abstract {
 				$user['password'] = $request->newpassword;
 				$user['confirm'] = $request->confirm;
 				$user['birthday'] = $birthday = strtotime($request->Birthday_Day . $request->Birthday_Month . $request->Birthday_Year);
-				//$user['tags'] = $tag_array = Cts_Common::makeTagArray($request->tags);
+				//$user['tags'] = $tag_array = Bolts_Common::makeTagArray($request->tags);
 				$user['gender'] = $request->gender;
 				$user['country_code'] = $request->country_code;
 				$user['aboutme'] = $request->aboutme;
 
 				// validate email
-				if (!Cts_Validate::checkEmail($user['email'])) {
+				if (!Bolts_Validate::checkEmail($user['email'])) {
 					$errors[] = $this->_T("Email is not valid");
 	   		 	}
 
@@ -793,8 +793,8 @@ class UserController extends Cts_Controller_Action_Abstract {
 
 				// if password isn't blank, validate it
 				if ($user['password'] != ""){
-					if(!Cts_Validate::checkLength($user['password'], 6, Cts_Registry::get('password_length'))) {
-						$errors[] = $this->_T("Password must be between %d and %d characters",array(6, Cts_Registry::get('password_length')));
+					if(!Bolts_Validate::checkLength($user['password'], 6, Bolts_Registry::get('password_length'))) {
+						$errors[] = $this->_T("Password must be between %d and %d characters",array(6, Bolts_Registry::get('password_length')));
 	   		 		}
 					// if password is set, make sure it matches confirm
 					if($user['password'] != $user['confirm']){
@@ -802,8 +802,8 @@ class UserController extends Cts_Controller_Action_Abstract {
 					}
 				}
 
-				if (!Cts_Validate::checkLength($user['aboutme'], 0, Cts_Registry::get('user_about_me_length'))) {
-					$errors[] = $this->_T("About me must be less than %d characters.",Cts_Registry::get('user_about_me_length'));
+				if (!Bolts_Validate::checkLength($user['aboutme'], 0, Bolts_Registry::get('user_about_me_length'))) {
+					$errors[] = $this->_T("About me must be less than %d characters.",Bolts_Registry::get('user_about_me_length'));
 				}
 
 				// convert birthday_ts to mysql date
@@ -823,24 +823,24 @@ class UserController extends Cts_Controller_Action_Abstract {
 						$destination_filename = $users_table->getAvatarPath($user['username'], true);
 						if (!is_dir($destination_path)) {
 						  	mkdir($destination_path, 0777, true);
-							Cts_Log::report("Creating user folder at ".$destination_path, null, Zend_Log::DEBUG);
+							Bolts_Log::report("Creating user folder at ".$destination_path, null, Zend_Log::DEBUG);
 						}
 						if (file_exists($destination_filename)) {
 							unlink($destination_filename);
-							Cts_Log::report("Deleted existing user avatar from ".$destination_path, null, Zend_Log::DEBUG);
+							Bolts_Log::report("Deleted existing user avatar from ".$destination_path, null, Zend_Log::DEBUG);
 						} else {
-							Cts_Log::report("User avatar did not exist in ".$destination_path, null, Zend_Log::DEBUG);
+							Bolts_Log::report("User avatar did not exist in ".$destination_path, null, Zend_Log::DEBUG);
 						}
 						move_uploaded_file($_FILES['filedata']['tmp_name'], $destination_filename);
 						Users::clearUserCache($user['username']);
-						Cts_Log::report("User avatar uploaded to ".$destination_path, null, Zend_Log::DEBUG);
+						Bolts_Log::report("User avatar uploaded to ".$destination_path, null, Zend_Log::DEBUG);
 						$params['user']['hasnewfile'] = true;
 					} else {
 						$params['user']['hasnewfile'] = false;
 					}
 				}
 
-				$additional = $this->_cts_plugin->doFilter($this->_mca."_pre_save", $params); // FILTER HOOK
+				$additional = $this->_Bolts_plugin->doFilter($this->_mca."_pre_save", $params); // FILTER HOOK
 				$errors = $additional['errors'];
 				$user = $additional['user'];
 				if (strlen($user['full_name']) < 1) {
@@ -863,7 +863,7 @@ class UserController extends Cts_Controller_Action_Abstract {
 
 					$where = $this->_users_table->getAdapter()->quoteInto('username = ?', $this->_username);
 					$this->_users_table->update($data, $where);
-					$this->_cts_plugin->doAction('default_user_edit_post_save', array('username' => $this->_username)); // ACTION HOOK
+					$this->_Bolts_plugin->doAction('default_user_edit_post_save', array('username' => $this->_username)); // ACTION HOOK
 					$this->view->success = $this->_T("Profile Updated.");
 
 				} else {
@@ -871,12 +871,12 @@ class UserController extends Cts_Controller_Action_Abstract {
 				}
 
 			}
-			//$this->view->tags = Cts_Common::makeTagString($tags);
+			//$this->view->tags = Bolts_Common::makeTagString($tags);
 
-			$this->view->end_year = -(Cts_Registry::get('minimum_registration_age'));
+			$this->view->end_year = -(Bolts_Registry::get('minimum_registration_age'));
 			// multiply min age by number of seconds in a year
-			$this->view->genders = Cts_Common::getGenderArray();
-			$user['aboutme'] = Cts_Common::br2nl(stripslashes($user['aboutme']));
+			$this->view->genders = Bolts_Common::getGenderArray();
+			$user['aboutme'] = Bolts_Common::br2nl(stripslashes($user['aboutme']));
 			$this->view->user = $user;
 		}
 	}
@@ -885,7 +885,7 @@ class UserController extends Cts_Controller_Action_Abstract {
 		Function: deleteavatar
 			Allows the currently authenticated user to delete their own avatar.
 			If the username passed as a parameter doesn't match the currently authenticated user,
-			the browser is redirected to '/default/auth/missing' (currently hardcoded).
+			the browser is redirected to '/bolts/auth/missing' (currently hardcoded).
 			After deleting the avatar image file, the user's image cache is cleared so the image does not persist.
 			Whether successful or not, the browser is redirected to the referring page.
 	*/
@@ -898,7 +898,7 @@ class UserController extends Cts_Controller_Action_Abstract {
 				unlink($avatar_path);
 				Users::clearUserCache($this->_identity->username);				
 			}
-			$this->_redirect('/default/user/edit');
+			$this->_redirect('/bolts/user/edit');
 		}
 	}
 
@@ -920,10 +920,10 @@ class UserController extends Cts_Controller_Action_Abstract {
 		Returns:
 			A string containing just the newly generated secret code.
 	*/
-	protected function _getConfirmationUrl($email, $url = "/default/user/resetpassword/email/") {
-		$salt = Cts_Registry::get('salt');
-		$url_filter = new Cts_Url_Filter();
-		$outstr = Cts_Registry::get('site_url').$url_filter->filter($url, array('locale_code' => $this->locale_code)).urlencode($email);
+	protected function _getConfirmationUrl($email, $url = "/bolts/user/resetpassword/email/") {
+		$salt = Bolts_Registry::get('salt');
+		$url_filter = new Bolts_Url_Filter();
+		$outstr = Bolts_Registry::get('site_url').$url_filter->filter($url, array('locale_code' => $this->locale_code)).urlencode($email);
 		$outstr .= "/code/".md5($email.$salt);
 		return $outstr;
 	}
@@ -944,7 +944,7 @@ class UserController extends Cts_Controller_Action_Abstract {
 			A boolean (true or false).
 	*/
 	protected function _checkConfirmationUrl($email, $code) {
-		$salt = Cts_Registry::get('salt');
+		$salt = Bolts_Registry::get('salt');
 		$test = $email.$salt;
 		if (md5($test) == $code) {
 			return true;

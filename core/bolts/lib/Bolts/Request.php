@@ -1,15 +1,15 @@
 <?php
 
 /*
-	Class: Cts_Request
+	Class: Bolts_Request
 
 	About: Author
 		Jaybill McCarthy
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 */
-class Cts_Request {
+class Bolts_Request {
 
 	/*
 		Group: Properties

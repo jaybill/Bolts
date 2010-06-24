@@ -20,7 +20,7 @@
  * 
  */
 
-class Cts_Amazon_FPS_SignatureUtilsForOutbound {
+class Bolts_Amazon_FPS_SignatureUtilsForOutbound {
 	 
     const SIGNATURE_KEYNAME = "signature";
     const SIGNATURE_METHOD_KEYNAME = "signatureMethod";
@@ -154,7 +154,7 @@ class Cts_Amazon_FPS_SignatureUtilsForOutbound {
         if (!isset ($requestURI)) {
         	$requestURI = "/";
         }
-		$uriencoded = implode("/", array_map(array("Cts_Amazon_FPS_SignatureUtilsForOutbound", "_urlencode"), explode("/", $requestURI)));
+		$uriencoded = implode("/", array_map(array("Bolts_Amazon_FPS_SignatureUtilsForOutbound", "_urlencode"), explode("/", $requestURI)));
         $data .= $uriencoded;
         $data .= "\n";
         

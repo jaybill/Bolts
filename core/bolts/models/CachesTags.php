@@ -7,12 +7,12 @@
 		Rich Joslin
 
 	About: License
-		<http://communit.as/docs/license>
+		<http://Bolts/docs/license>
 
 	About: See Also
-	 	<Cts_Db_Table_Abstract>
+	 	<Bolts_Db_Table_Abstract>
 */
-class CachesTags extends Cts_Db_Table_Abstract {
+class CachesTags extends Bolts_Db_Table_Abstract {
 
 	/* Group: Instance Variables */
 
@@ -20,7 +20,7 @@ class CachesTags extends Cts_Db_Table_Abstract {
 		Variable: $_name
 			The name of the table or view to interact with in the data source.
 	*/
-    protected $_name = 'default_caches_tags';
+    protected $_name = 'bolts_caches_tags';
 
 	/*
 		Variable: $_primary
