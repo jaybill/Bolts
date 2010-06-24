@@ -36,6 +36,7 @@ class Bolts_Request {
 	*/
 	function __construct($request) {
 		$params = $request->getParams();
+		//dd($request);
 		foreach ($params as $name => $param) {
 			if (!is_array($param)) {
 				$param =  trim($param);

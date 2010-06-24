@@ -1,4 +1,5 @@
 <?php
+
 /*
 	File: index.php
 		Also known as the bootstrap.

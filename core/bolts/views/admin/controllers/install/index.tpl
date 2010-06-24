@@ -10,7 +10,7 @@
 			<textarea rows="20" cols="80">{$config_file}</textarea>
 		{/if}
 	{else} 
-		<form method="post" action="/" class="multiform" enctype="multipart/form-data">
+		<form method="post" action="/" class="multiform" {*enctype="multipart/form-data"*}>
 			<h3 class="sec-title">Default Database Settings</h3>		
 			<fieldset>
 				<p>

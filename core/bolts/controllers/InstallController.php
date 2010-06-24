@@ -39,12 +39,13 @@ class InstallController extends Zend_Controller_Action {
 	function init() {
 		parent::init();
 		$theme_locations = Zend_Registry::get("theme_locations");
-		$template_path = $theme_locations['admin']['default_theme']['path'] . '/modules/'.$this->getRequest()->getModuleName();	
+		$basepath = Zend_Registry::get('basepath');
+		$template_path = $basepath . '/core/bolts/views/admin/controllers';	
 		$this->view->setScriptPath($template_path);
-		$this->view->default_admin_theme_path = $theme_locations['admin']['default_theme']['path'];
-		$this->view->default_admin_global_path = $theme_locations['admin']['default_theme']['path'].'/global';
-		$this->view->default_admin_theme_url = $theme_locations['admin']['default_theme']['url'];		
-		$this->view->current_path = $template_path . "/" . $this->getRequest()->getControllerName();
+		$this->view->default_admin_theme_path = $basepath . '/core/bolts/views/admin';
+		$this->view->default_admin_global_path = $basepath . '/core/bolts/views/admin/global';
+		$this->view->default_admin_theme_url = '/core/bolts/views/admin';		
+		$this->view->current_path = $template_path . '/install';
         $this->view->isAdminController = true;
 		$this->view->site_name = "Bolts";
 	}
@@ -166,10 +167,12 @@ class InstallController extends Zend_Controller_Action {
 	*/
 	function indexAction() {
 		$request = new Bolts_Request($this->getRequest());
+
 		$basepath = Zend_Registry::get('basepath');
 		$this->view->timezones = Bolts_Common::getTimeZonesArray();
 
 		if ($this->getRequest()->isPost()) {
+			//dd($_REQUEST);
 			$errors = array();
 
 			/*
