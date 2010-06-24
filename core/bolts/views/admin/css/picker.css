@@ -1,0 +1,26 @@
+div.jq-picker-outer select {
+	border: 1px solid black;
+	height: 200px;
+	margin: 0 20px 0 0;
+	width: 300px;
+}
+
+div.jq-picker-outer select option {
+	padding: 3px 0 3px 6px;
+}
+
+div.jq-picker-outer select option:hover {
+	background-color: #ddd;
+}
+
+div.jq-picker-outer select.jq-picker-source option:hover {
+	background: #ddd url('../images/icons/arrow_right.png') no-repeat right;
+}
+
+div.jq-picker-outer select.jq-picker-dest option {
+	padding-left: 20px;
+}
+
+div.jq-picker-outer select.jq-picker-dest option:hover {
+	background: #ddd url('../images/icons/arrow_left.png') no-repeat left;
+}

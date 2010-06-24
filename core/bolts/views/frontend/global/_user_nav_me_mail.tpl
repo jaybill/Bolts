@@ -1,0 +1,1 @@
+<li><a href="{url}/mail{/url}" title="{t}Mail{/t}">{t}Mail{/t} ({message_count username=$loggedInUsername}/{message_count type="total" username=$loggedInUsername})</a></li>
