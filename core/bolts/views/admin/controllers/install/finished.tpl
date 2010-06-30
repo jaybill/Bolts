@@ -1,5 +1,5 @@
-{include file="file:$current_path/_header.tpl" pageTitle="Installed!" masthead="Installation Complete"}
-<div class="grid_16">
+{include file="file:$current_path/_header.tpl"}
+
 	<p>
 		Congratulations! You've successfully installed Bolts!
 	</p>
@@ -19,5 +19,5 @@
 		<li><a href="{url}/bolts/config/index{/url}">View or change configuration settings.</a></li>
 		<li><a href="{url}/{/url}">View the site.</a></li>
 	</ul>
-</div>
+
 {include file="file:$current_path/_footer.tpl"}

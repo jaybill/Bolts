@@ -1,61 +1,89 @@
 {include file="file:$current_path/_header.tpl"}
-<div class="grid_4 sidenav">
-	<p>It appears this is the first time you've run this instance of Bolts.</p>
-	<p>Answer the questions and click on the "Install" button below to continue.</p>
-</div>
-<div class="grid_12">
-	<!-- MAIN COLUMN -->
+		
 	{if isset($success)}
-		{if isset($config_file)}
+
+ 		{if isset($config_file)}
+
 			<textarea rows="20" cols="80">{$config_file}</textarea>
+
 		{/if}
+		
 	{else} 
-		<form method="post" action="/" class="multiform" {*enctype="multipart/form-data"*}>
-			<h3 class="sec-title">Default Database Settings</h3>		
-			<fieldset>
-				<p>
-					<label>Database Host</label>
-					<input type="text" value="{$db_host}" name="db_host" id="db_host" class="text"/>
-				</p>
-				<p>
-					<label>Database Port</label>		
-					<input type="text" value="{$db_port}" name="db_port" id="db_port" class="text"/>
-				</p>
-				<p>
-					<label>Database Socket (optional)</label>		
-					<input type="text" value="{$db_sock}" name="db_sock" id="db_sock" class="text"/>	
-				</p>
-				<p>	
-					<label>Database Name (must already exist)</label>		
-					<input type="text" value="{$db_name}" name="db_name" id="db_name"/>
-				</p>
-				<p>		
-					<label>Database Username</label>		
-					<input type="text" value="{$db_user}" name="db_user" id="db_user"/>
-				</p>
-				<p>	
-					<label>Database Password</label>		
-					<input type="password" value="{$db_pass}" name="db_pass" id="db_pass"/>
-				</p>				
-				<h3 class="sec-title">Application Settings</h3>		
-				<p>
-					<label>Time zone</label>			
-					{html_options name=Bolts_timezone id=Bolts_timezone options=$timezones selected=$Bolts_timezone}
-				</p>
-				<h3 class="sec-title">Admin User Settings</h3>
-				<p>
-					<label>Username</label>
-					<input type="text" value="{$admin_username}" name="admin_username" id="admin_username"/>
-				</p>
-				<p>
-					<label>Email</label>
-					<input type="text" value="{$admin_email}" name="admin_email" id="admin_email"/>
-				</p>
-				
-				<h3 class="sec-title">Save and Install</h3>
-				<p><input type="submit" class="button yes" value="Install"/></p>
-			</fieldset>
-		</form>
+		<form method="post" action="/" class="multiform" enctype="multipart/form-data">
+				<table>
+                	<col id="fieldname" />
+                    <col id="field" />
+                    <col id="help"/>
+
+                    <tr>
+						<th scope="row"><label>Database Host</label></th>
+						<td><input type="text" value="{$db_host}" name="db_host" id="db_host" class="text"/></td>
+                        <td>the hostname of the server where the database server runs</td>
+                    </tr>
+                    
+                    <tr>
+						<th scope="row"><label>Database Port</label></th>
+						<td><input type="text" value="{$db_port}" name="db_port" id="db_port" class="text"/></td>
+                        <td>the port the database server uses (usually 3306)</td>
+                    </tr>                    
+                    
+					<tr>
+						<th scope="row"><label>Database Socket</label></th>
+						<td><input type="text" value="{$db_sock}" name="db_sock" id="db_sock" class="text"/></td>
+                        <td> the socket that the database server uses (optional)</td>
+                    </tr> 
+						
+					<tr>
+						<th scope="row"><label>Database Name</label></th>
+						<td><input type="text" value="{$db_name}" name="db_name" id="db_name"/></td>
+                        <td>name of the database to use (must already exist)</td>
+                    </tr>                        
+                        
+					<tr>
+						<th scope="row"><label>Database Username</label></th>
+						<td><input type="text" value="{$db_user}" name="db_user" id="db_user"/></td>
+                        <td>username that has the ability to create tables in the database</td>
+                    </tr>						
+                        	
+					<tr>
+						<th scope="row"><label>Database Password</label></th>
+						<td><input type="password" value="{$db_pass}" name="db_pass" id="db_pass"/></td>
+                        <td>password for the above database user</td>
+                    </tr>						
+							
+					<tr>
+						<th scope="row"><label>Time zone</label></th>
+						<td>
+                        <!--{html_options name=Bolts_timezone id=Bolts_timezone options=$timezones selected=$Bolts_timezone}-->
+	                    <select>
+    	    	            <option>America/Los Angeles</option>
+        	            </select>
+                        <td>the timezone that this instance of Bolts should use</td>
+                    </tr>					
+
+					<tr>
+						<th scope="row"><label>Applcation Name</label></th>
+						<td><input type="text" value="{$app_name}" name="app_name" id="app_name"/></td>
+                        <td>the name of your application. (this can be changed later)</td>
+                    </tr>								
+					
+					<tr>
+						<th scope="row"><label>Admin Username</label></th>
+						<td><input type="text" value="{$admin_username}" name="admin_username" id="admin_username"/></td>
+                        <td>username for the admin user (password assigned later)</td>
+                    </tr>				
+								
+					<tr>
+						<th scope="row"><label>Admin Email</label></th>
+						<td><input type="text" value="{$admin_email}" name="admin_email" id="admin_email"/></td>
+                        <td>email address of the admin user</td>
+                    </tr>
+
+			</table>
+			<span id="submit">	
+			<input type="submit" class="button yes" value="Install"/>
+			</span>
+	    </form>
 	{/if}
-</div>
+
 {include file="file:$current_path/_footer.tpl"}
