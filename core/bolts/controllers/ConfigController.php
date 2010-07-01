@@ -54,7 +54,7 @@ class ConfigController extends  Bolts_Controller_Action_Admin {
 		if ($request->has('modid')) {
 			$modid = $request->modid;
 		} else {
-			$modid = 'default';
+			$modid = 'bolts';
 		}
 		if ($this->_request->isPost()) {
 			//we are posting

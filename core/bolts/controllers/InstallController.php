@@ -66,11 +66,20 @@ class InstallController extends Zend_Controller_Action {
 		$appNamespace = new Zend_Session_Namespace('Bolts_Temp');
 		$basepath = Zend_Registry::get('basepath');
 		$config_table = new Config();
-		$config_table->set('default', 'upload_path', $basepath."/uploads", true);
-		$config_table->set('default', 'theme', 'default', true);
-		$config_table->set('default', 'missing_image', $basepath."/themes/frontend/bolts/images/image-missing.png", true);
-		$config_table->set('default', 'site_url', 'http://'.$_SERVER['SERVER_NAME']);
-		$config_table->set('default', 'salt', substr(md5(rand(1, 1000)), 0, 10));
+		
+		$appname = "My Application";
+		
+		if($request->has('appname')){
+			$appname = $request->appname;
+		}
+		$config_table->set('bolts', 'site_name'	, $appname);
+		$config_table->set('bolts', 'title_prefix', $appname);		
+		
+		$config_table->set('bolts', 'upload_path', $basepath."/uploads", true);
+		$config_table->set('bolts', 'theme', 'default', true);
+		$config_table->set('bolts', 'missing_image', $basepath."/themes/frontend/bolts/images/image-missing.png", true);
+		$config_table->set('bolts', 'site_url', 'http://'.$_SERVER['SERVER_NAME']);
+		$config_table->set('bolts', 'salt', substr(md5(rand(1, 1000)), 0, 10));
 		$config_table->cache();
 		$username = $request->username;
 		$users_table = new Users();
@@ -172,7 +181,7 @@ class InstallController extends Zend_Controller_Action {
 		$this->view->timezones = Bolts_Common::getTimeZonesArray();
 
 		if ($this->getRequest()->isPost()) {
-			//dd($_REQUEST);
+			
 			$errors = array();
 
 			/*
@@ -212,6 +221,10 @@ class InstallController extends Zend_Controller_Action {
 
 			if($request->admin_email == null){
 				$errors[] = $this->_T("Admin email cannot be blank.");
+			}
+
+			if($request->app_name == null){
+				$errors[] = $this->_T("Application name cannot be blank.");				
 			}
 
 			$cfg_array = array(
@@ -334,7 +347,7 @@ class InstallController extends Zend_Controller_Action {
 					$this->view->config_filename = $config_filename;
 					$this->view->success = "Database installed, but could not write config file. Please create the file \"".$config_filename."\" and paste this following into it:";
 				} else {
-					$this->_redirect("/bolts/install/secondstage/username/".$request->admin_username);
+					$this->_redirect("/bolts/install/secondstage/username/".$request->admin_username."/appname/".$request->app_name);
 				}			
 
 			} else {
@@ -345,6 +358,7 @@ class InstallController extends Zend_Controller_Action {
 				$this->view->db_pass 	= $request->db_pass;
 				$this->view->db_port 	= $request->db_port;
 				$this->view->db_sock 	= $request->db_sock;
+				$this->view->app_name   = $request->app_name;
 				$this->view->admin_username		= $request->admin_username;				
 				$this->view->admin_email		= $request->admin_email;
 				$this->view->Bolts_timezone 	= $request->Bolts_timezone;
@@ -359,6 +373,7 @@ class InstallController extends Zend_Controller_Action {
 			$this->view->db_pass = "";
 			$this->view->db_port = "3306";
 			$this->view->db_sock = "";
+			$this->view->app_name = "My Application";
 			$this->view->admin_username		= "admin";
 			$this->view->Bolts_timezone 		= "America/Los_Angeles";				
 

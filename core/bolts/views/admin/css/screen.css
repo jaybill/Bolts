@@ -107,7 +107,17 @@ h1 {
 	border-left: 0px none;	
 }
 
+#nav_util{
+	color: #fff;
+	text-align: right;
+	vertical-align: top;	
+}
 
+#nav_util a,
+#nav_util a:visited,
+#nav_util a:hover{
+	color: #fff;
+}
 
 #nav_section {
 

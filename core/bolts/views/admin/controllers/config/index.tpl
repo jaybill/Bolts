@@ -1,4 +1,7 @@
-{include file="file:$admin_theme_global_path/_header.tpl" pageTitle="Configuration" masthead="Configuration for module `$modid`"}
+{include file="file:$admin_theme_global_path/_header.tpl" 
+include_section_nav="$admin_theme_path/controllers/config/_section_nav.tpl"  
+current_section_nav=$mod 
+}
 <div class="grid_4 sidenav">
 	<h3>{t}Modules{/t}</h3>
 	{if isset($modules)}

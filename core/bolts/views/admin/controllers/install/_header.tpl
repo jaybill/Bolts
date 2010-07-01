@@ -12,8 +12,7 @@
  <h1>Bolts</h1>
 <h2>Installation</h2>
 <div class="container_12">
-   	<div class="grid_8 suffix_2 prefix_2">
-	<p>Looks like this is the first time you've used this instance of Bolts. To get started, just fill out the fields below with some basic information about your database and server environment and then click &quot;Install&quot;.</p>
+   	<div class="grid_8 suffix_2 prefix_2">	
 	{if count($errors) gt 0}
 		<div id="errors">		
 			<h3>Error</h3>

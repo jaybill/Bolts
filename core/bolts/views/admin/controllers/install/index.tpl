@@ -9,7 +9,9 @@
 		{/if}
 		
 	{else} 
-		<form method="post" action="/" class="multiform" enctype="multipart/form-data">
+		<p>Looks like this is the first time you've used this instance of Bolts. To get started, just fill out the fields below with some basic information about your database and server environment and then click &quot;Install&quot;.</p>
+	
+		<form method="post" action="/" >
 				<table>
                 	<col id="fieldname" />
                     <col id="field" />

@@ -1,5 +1,4 @@
 <?php
-
 /*
 	File: index.php
 		Also known as the bootstrap.
@@ -63,8 +62,8 @@ try {
 	$theme_locations['frontend']['default_theme']['url'] = "/themes/frontend/default";
 	$theme_locations['admin']['current_theme']['path'] = $basepath."/themes/admin/".$admin_theme;
 	$theme_locations['admin']['current_theme']['url']  = "/themes/admin/".$admin_theme;
-	$theme_locations['admin']['default_theme']['path'] = $basepath."/themes/admin/default";
-	$theme_locations['admin']['default_theme']['url']  = "/themes/admin/default";
+	$theme_locations['admin']['default_theme']['path'] = $basepath."/core/bolts/views/admin";
+	$theme_locations['admin']['default_theme']['url']  = "/core/bolts/views/admin";
 
 	Zend_Registry::set("theme_locations", $theme_locations);
 
