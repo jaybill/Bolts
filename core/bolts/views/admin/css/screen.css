@@ -37,7 +37,7 @@ h1 {
 	color: #000;	
 }
 
-#content_main h2{
+#content_wrap h2{
 	border-bottom: 1px solid #666;	
 	margin: 0px 10px 10px 10px;
 	color: #666;
@@ -393,6 +393,63 @@ input::-moz-focus-inner /*Remove button padding in FF*/
 
 /* forms */
 
+label{
+	display: block;	
+}
+
+/* page specific */
+
+/** config form **/
+
+#config-form{
+	width: 920px;
+	margin: 10px;
+	background: #ccc;	
+}
+
+#config-form col{
+	
+	
+}
 
 
+
+#config-form col.ckey{
+	width: 300px;
+}
+
+#config-form col.field{
+	width: 550px;
+}
+
+#config-form input[type=text]{
+	width: 525px;
+}
+
+#config-form input[type=checkbox]{
+	display: block;
+	margin: 0px auto;
+}
+
+#config-form th, #config-form td{
+	padding: 4px;
+	height: 30px;
+	vertical-align: middle;	
+}
+
+#config-form thead {
+	background: #333;
+	color: #fff;	
+}
+
+#config-form th{
+	text-align: left;
+	font-size: 1.2em;	
+	text-indent: 4px;
+}
+
+#config-form tr{
+	border-bottom: #eee 10px solid;	
+	
+}
 

@@ -1,40 +1,80 @@
-{include file="file:$admin_theme_global_path/_header.tpl" pageTitle="Manage Users" masthead="Manage Users"}
-<div class="grid_4 sidenav">
-	<h3>{t}Search{/t}</h3>
-	<form class="search" action="{url}/bolts/useradmin/index{/url}" method="post" id="usersearch">
-		<p><input type="text" id="searchterm" name="searchterm" value="{$searchterm}"/></p>
-		<p><input type="submit" value="{t}Search{/t}" class="button"/></p>
-	</form>
-	<h3>{t}Options{/t}</h3>
-	<ul>		
-		<li><a href="{url}/bolts/useradmin/edit{/url}">{t}Create New User{/t}</a></li>
-	</ul>
-</div>
-<div class="grid_12">
-	{if count($users) gt 0}			
-		<div class="grid_12 faux-thead alpha omega">
-			<div class="grid_4 alpha">{t}Username{/t}</div>
-			<div class="grid_4">{t}Full Name{/t}</div>
-			<div class="grid_4 omega">{t}Last Login{/t}</div>
-		</div>
-		{foreach from=$users item=user key=index}
-			<div class="grid_12{if ($index + 1) mod 2 eq 0} even{else} odd{/if} faux-tr  alpha omega">
-				<div class="grid_4 alpha">
-					<a href="{url}/bolts/useradmin/edit/username/{$user.username}{/url}">{$user.username}</a>
-				</div>
-				<div class="grid_4">
-					{$user.full_name}
-				</div>
-				<div class="grid_4 omega">
-					{$user.last_login_on}
-				</div>
-			</div>
-		{/foreach}
+{include file="file:$admin_theme_global_path/_header.tpl" page_title="Users"}
+<h2>Users</h2>
+  <div class="grid_16 alpha omega">
+      <form action="{url}/bolts/useradmin/index{/url}" method="post" id="filters">
+      <label>Filters:</label>
+      <select>
+          <option>Search Term</option>          
+      </select>
+      <input type="text" id="searchterm" name="searchterm" value="{$searchterm}"/>
+      <input type="submit" value="Add Filter"/>
+      </form> 
+     {if count($filters_applied) gt 0}
+      <ul id="filters-applied">
+          <li class="label"><span>Applied Filters:</span></li>
+          {foreach from=$filters_applied item=filter_applied}
+          <li><a href="#">Before <strong>5/16</strong></a></li>          
+          {/foreach}
+      </ul>
+  	{/if}
+  </div>
+  <div class="clear"></div>			
+
+         <div class="grid_6 alpha">
+              <div class="pager">
+              <a href="#" class="first">First</a>
+              <a href="#" class="previous">Previous</a>
+              <span>Page <strong>2</strong> of <strong>12</strong></span>
+              <a href="#" class="next">Next</a>
+              <a href="#" class="last">Last</a>            
+              <span>Showing <strong>1-30</strong> of <strong>214</strong></span>
+            </div>
+              
+         </div>
+         <div class="grid_10 omega">
+			<a href="{url}/bolts/useradmin/edit{/url}">{t}Create New User{/t}</a>         
+         </div>
+          <div class="clear"></div>
+
+
+
+
+
+{*include file="file:$admin_theme_global_path/_pager.tpl"*}
+	{if count($users) gt 0}	
+		<div class="grid_16 alpha omega">        
+         <div class="tabular"> 
+              <table>
+                <col />
+                <col />
+                <col />
+                <col class="last"/>
+                
+                <thead>
+                  <tr>
+                    <th><a href="#" class="sort-asc">{t}Username{/t}</a></th>
+                    <th><a href="#" class="sort-desc">{t}Full Name{/t}</a></th>                    
+                    <th>{t}Email{/t}</th>
+                    <th>{t}Last Login{/t}</th>
+                  </tr>
+                </thead>
+  
+                <tbody>
+                {foreach from=$users item=user key=index}
+                  <tr class="{cycle values=",odd"}">
+                    <td><a href="{url}/bolts/useradmin/edit/username/{$user.username}{/url}">{$user.username}</a></td>
+                    <td>{$user.full_name}</td>                    
+                    <td>{$user.email}</td>
+                    <td>{$user.last_login_on}</td>
+                  </tr>                 
+                 {/foreach} 
+                                                               
+                </tbody>
+              </table>
+              </div>
+              </div>
 	{else}
 		<p>{t}No users found.{/t}</p>	
-	{/if}	
-	<div class="grid_12 alpha omega">
-		{include file="file:$admin_theme_global_path/_pager.tpl"}
-	</div>
-</div>
+	{/if}
+
 {include file="file:$admin_theme_global_path/_footer.tpl"}

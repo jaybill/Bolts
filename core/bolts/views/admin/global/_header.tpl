@@ -13,18 +13,28 @@
 <script type="text/javascript" src="{$default_admin_theme_url}/js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="{$default_admin_theme_url}/js/global.js"></script>
 {include_js urls=$js_urls}
-<title>Bolts - {$title_prefix}</title>
+<title>{$title_prefix}{if isset($page_title)} - {$page_title}{/if}</title>
 </head>
 <body>
 <div class="container_16">
   <div class="grid_8">
-    <h1>Application Name</h1>
+    <h1>{$site_name}</h1>
   </div>
   <div class="grid_8" id="nav_util">
     <a href="{url}/{/url}">{t}View Site{/t}</a> |
 	<a href="{url}/bolts/auth/logout{/url}">{t}Log Out{/t}</a>
   </div>
-	{if isset($include_section_nav)}{include file="file:$include_section_nav" current_section_nav=$current_section_nav}{/if}
+	<div class="clear"></div>  
+       <div class="grid_16" id="nav_top">	    
+          <ul>
+              <li class="first"><a href="{url}/bolts/admin/index{/url}">{t}Home{/t}</a></li>
+              <li><a href="{url}/bolts/useradmin/index{/url}" class="current">{t}Users{/t}</a></li>
+              <li><a href="{url}/bolts/config/index{/url}">{t}Config{/t}</a></li>
+          </ul>
+      </div>
+      <div class="clear"></div>
+  
+  
   <div class="grid_16" id="content_wrap"> 
 
 	
