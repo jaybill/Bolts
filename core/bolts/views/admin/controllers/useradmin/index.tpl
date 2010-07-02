@@ -18,29 +18,25 @@
       </ul>
   	{/if}
   </div>
-  <div class="clear"></div>			
+  	<div class="clear"></div>			
 
-         <div class="grid_6 alpha">
-              <div class="pager">
-              <a href="#" class="first">First</a>
-              <a href="#" class="previous">Previous</a>
-              <span>Page <strong>2</strong> of <strong>12</strong></span>
-              <a href="#" class="next">Next</a>
-              <a href="#" class="last">Last</a>            
-              <span>Showing <strong>1-30</strong> of <strong>214</strong></span>
-            </div>
-              
-         </div>
-         <div class="grid_10 omega">
-			<a href="{url}/bolts/useradmin/edit{/url}">{t}Create New User{/t}</a>         
-         </div>
-          <div class="clear"></div>
+	 <div class="grid_6 alpha pager-hole">
+		{include file="file:$admin_theme_global_path/_pager.tpl"}			              
+	 </div>
+	 <div class="grid_10 omega" >
+	 	
+	 	<div class="new-record" >         	
+			<a href="{url}/bolts/useradmin/edit{/url}" class="new-record-link">{t}Create New User{/t}</a>
+		</div>
+					         
+	 </div>
+	  <div class="clear"></div>
 
 
 
 
 
-{*include file="file:$admin_theme_global_path/_pager.tpl"*}
+
 	{if count($users) gt 0}	
 		<div class="grid_16 alpha omega">        
          <div class="tabular"> 
@@ -74,7 +70,7 @@
               </div>
               </div>
 	{else}
-		<p>{t}No users found.{/t}</p>	
+		<div class="no-records">{t}No users found.{/t}</div>
 	{/if}
 
 {include file="file:$admin_theme_global_path/_footer.tpl"}

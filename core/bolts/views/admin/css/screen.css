@@ -204,7 +204,7 @@ h1 {
 
 .tabular table{	
 	width: 100%;
-	
+	margin-bottom: 0px;
 }
 
 .tabular table col{
@@ -227,15 +227,54 @@ h1 {
 	background: #ddd;
 }
 
+.no-records{
+	text-align: center;
+	font-size: 16px;
+	background: #ccc;
+	color: #333;
+	padding: 20px;
+	font-weight: bold;
+	margin:  10px;
+}
 
+.new-record{
+	margin: 10px;
+	margin-bottom: 0px;	
+	overflow: auto;
+}
 
+a.new-record-link{
+		font-size: 12px;
+		font-weight: bold;
+		display: block;
+		background: #008000;
+		color: #fff;
+		float: right;
+		padding-left: 5px;
+		padding-right: 5px;
+		text-decoration: none;
+}
+
+a.new-record-link:hover,a.new-record-link:visited{
+	color: #fff;
+}
+
+a.new-record-link:hover{
+	background: #00c600;	
+}
 
 /* pager */
+
+.pager-hole{
+	
+	min-height: 20px;
+	overflow: auto;	
+}
 
 .pager{
 	margin: 10px;	
 	margin-bottom: 0px;
-	overflow: auto;
+	overflow: auto;	
 }
 
 .pager a{
@@ -246,9 +285,11 @@ h1 {
 	background: #666;
 	margin: 0px 3px;
 	
+	
 }
 
 .pager a.first{
+	margin-left: 0px;
 	background: #999 url(../img/arrow_first.png) ;
 }
 
