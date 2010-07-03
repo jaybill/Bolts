@@ -1,5 +1,5 @@
 {include file="file:$admin_theme_global_path/_header.tpl" page_title="Users"}
-<h2>Users</h2>
+{include file="file:$admin_theme_global_path/_user_section_nav.tpl" current="users"}
   <div class="grid_16 alpha omega">
       <form action="{url}/bolts/useradmin/index{/url}" method="post" id="filters">
       <label>Filters:</label>

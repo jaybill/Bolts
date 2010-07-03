@@ -50,7 +50,7 @@ class ModuleController extends  Bolts_Controller_Action_Admin {
 	*/
 	
     function indexAction(){
-    	$modules_table = new Modules();
+    	$modules_table = new Modules("nuts");
     	$request = new Bolts_Request($this->getRequest());
 
     	if($request->has("id") and $request->has("perform")){
@@ -128,7 +128,7 @@ class ModuleController extends  Bolts_Controller_Action_Admin {
     	}
     	
     	$basepath = Zend_Registry::get('basepath');
-		$module_dir = $basepath."/modules";
+		$module_dir = $basepath."/nuts";
 		$o_module_dir = dir($module_dir );
 		$available_modules = array();
 		

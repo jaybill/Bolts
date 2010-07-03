@@ -74,7 +74,7 @@ abstract class Bolts_Controller_Action_Abstract extends Zend_Controller_Action {
 	*/
 	function init() {
 		$params = array('username' => null);
-		$modules_table = new Modules();
+		$modules_table = new Modules("core");
 		$roles_table = new Roles();
 		$enabled_modules = $modules_table->getEnabledModules();
 		

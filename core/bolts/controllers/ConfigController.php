@@ -49,7 +49,7 @@ class ConfigController extends  Bolts_Controller_Action_Admin {
 	*/
 	function indexAction() {
 		$config_table = new Config();
-		$modules_table = new Modules();
+		$modules_table = new Modules("core");
 		$request = new Bolts_Request($this->getRequest());
 		if ($request->has('modid')) {
 			$modid = $request->modid;

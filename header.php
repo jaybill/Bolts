@@ -148,9 +148,9 @@ require_once('Zend/Loader.php');
 Zend_Registry::set('basepath', $basepath);
 
 $tmp_inculde_path = "";
-$smarty_plugins_dirs = null;
-$module_dir = $basepath."/core";
-$default_dir = $module_dir. "/bolts";
+$core_module_dir = $basepath."/core";
+$module_dir = $basepath."/nuts";
+$default_dir = $core_module_dir. "/bolts";
 $subdirs = array("models", "plugins", "controllers", "lib");
 
 // set include paths for default module
@@ -206,7 +206,7 @@ if ($isInstalled) {
 	$registry->set('dbAdapters', $dbAdapters);
 
 	// check for database changes
-	$modules_table = new Modules();
+	$modules_table = new Modules("core");
 
 	$modules_table->upgradeDatabase("bolts");
 	$modules_table->setDefaultConfig("bolts");
@@ -222,12 +222,21 @@ if ($isInstalled) {
 	Zend_Session::setSaveHandler(new Bolts_SessionSaveHandler());	
 	Zend_Session::start();	
 
-	// Get the list of modules from the db
-	$modules_table = new Modules();
+ 
+ 	// set up nuts
+
+	$modules_table = new Modules("nuts");
 	$enabled_modules = $modules_table->fetchAll("is_enabled = 1");
 	if (count($enabled_modules) > 0) {
 		foreach ($enabled_modules as $module) {
+			
 			$full_dir = $module_dir."/".$module->id;
+			
+			 // set include paths for nuts
+			foreach ($subdirs as $subdir) {
+				set_include_path(get_include_path().PATH_SEPARATOR.$full_dir."/".$subdir);
+			}
+			
 	   		if ($modules_table->isEnabled($module->id)) {
 	   			$modules_table->setup($module->id);
 				$smarty_plugins_dir = $full_dir.'/smarty_plugins';

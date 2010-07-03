@@ -102,6 +102,7 @@ try {
 	$front = Zend_Controller_Front::getInstance();
 	$front->setDefaultModule("bolts");
 
+	$front->addModuleDirectory($core_module_dir);
 	$front->addModuleDirectory($module_dir);
 	$front->throwExceptions(true);
 	$front->setParam('noViewRenderer', false);

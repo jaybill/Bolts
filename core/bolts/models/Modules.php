@@ -49,8 +49,17 @@ class Modules extends Bolts_Db_Table_Abstract {
 	public $notice = null;
 
 	protected $_cache;
+	public $module_dir;
 
 	function init() {
+	}
+
+	function __construct($module_dir){
+		if(is_null($module_dir)){
+			throw new Exception("Module dir cannot be null.");	
+		}
+		$this->module_dir = $module_dir;		
+		parent::__construct();		
 	}
 
 	/* Group: Instance Methods */
@@ -256,7 +265,7 @@ class Modules extends Bolts_Db_Table_Abstract {
 		if (empty($config)) {
 			
 			$basepath = Zend_Registry::get("basepath");
-			$module_ini_file = $basepath."/core/".$module_id."/module.ini";
+			$module_ini_file = $basepath."/".$this->module_dir."/".$module_id."/module.ini";
 
 			if (file_exists($module_ini_file)) {
 				$config = parse_ini_file($module_ini_file, true);				
@@ -369,7 +378,7 @@ class Modules extends Bolts_Db_Table_Abstract {
 	*/
 	function setup($module_id) {
 		$basepath = Zend_Registry::get("basepath");
-		$module_dir = $basepath."/core";
+		$module_dir = $basepath."/".$this->module_dir;
 		$full_dir = $module_dir."/".$module_id;
 		$subdirs = array("models", "plugins", "controllers", "lib");
 		$tmp_include_path = "";
