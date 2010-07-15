@@ -127,7 +127,7 @@ class InstallController extends Zend_Controller_Action {
        		$where  = $roles_resources_table->getAdapter()->quoteInto("module = ? ", "bolts");
        		$where .= $roles_resources_table->getAdapter()->quoteInto(" and controller = ? ", "Install");
        		$roles_resources_table->delete($where);
-			$modules_table = new Modules();
+			$modules_table = new Modules("core");
 			$modules_table->upgradeDatabase("bolts");
 		} else {
 			die("Somehow the admin user didn't get created or didn't get sent with the request. This is bad. Really, really bad.");

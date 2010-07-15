@@ -56,10 +56,7 @@
 					<tr>
 						<th scope="row"><label>Time zone</label></th>
 						<td>
-                        <!--{html_options name=Bolts_timezone id=Bolts_timezone options=$timezones selected=$Bolts_timezone}-->
-	                    <select>
-    	    	            <option>America/Los Angeles</option>
-        	            </select>
+                        {html_options name=Bolts_timezone id=Bolts_timezone options=$timezones selected=$Bolts_timezone}	                    
                         <td>the timezone that this instance of Bolts should use</td>
                     </tr>					
 
