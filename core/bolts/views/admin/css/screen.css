@@ -3,6 +3,10 @@
 
 /* general */
 
+.debug{
+	border: 1px solid #f00;	
+}
+
 body {
 	background: #999 url(../img/grade_bg.png) repeat-x ;
 	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
@@ -434,9 +438,79 @@ input::-moz-focus-inner /*Remove button padding in FF*/
 
 /* forms */
 
-label{
-	display: block;	
+.form{
+	width: 920px;
+	margin: 10px;
+	margin-top: 0px;
+	background: #ccc;	
 }
+
+.form thead th h4{
+	margin: 0px;
+	padding: 0px;
+		
+}
+
+.form col{	
+	
+}
+
+.form col.label{
+	width: 200px;
+}
+
+.form col.input{
+	width: 550px;
+}
+
+.form input[type=text],.form input[type=password],.form textarea,.form select{
+	margin: 0px;
+	margin-top: 2px;	
+	width: 300px;
+	border: 1px solid #222;
+	display: block;
+	padding: 2px;
+}
+
+.form select{
+	margin: 0px;
+	width: 305px;	
+	padding: 2px;
+}
+
+.form input[type=checkbox]{
+
+}
+
+
+
+.form th, .form td{
+	padding: 4px;
+	vertical-align: top;	
+}
+
+.form th label{
+	display: block;
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+.form thead {
+	background: #333;
+	color: #fff;	
+}
+
+.form th{
+	text-align: left;
+	font-size: 1.2em;	
+	text-indent: 4px;
+}
+
+.form tr{
+	border-bottom: #eee 10px solid;	
+	
+}
+
 
 /* page specific */
 
